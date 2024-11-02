@@ -5,7 +5,7 @@ using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddEnvironmentVariables("APPSETTING_");
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -15,10 +15,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var botConfigSection = builder.Configuration.GetSection("BotConfiguration").Get<BotConfiguration>();
-
 builder.Services.AddScoped<ICommandService, CommandService>();
-builder.Services.AddTelegramBotClient(botConfigSection);
+builder.Services.AddTelegramBotClient();
 
 var app = builder.Build();
 

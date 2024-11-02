@@ -5,11 +5,16 @@ namespace ConnectBot
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddTelegramBotClient(this IServiceCollection serviceCollection,
-            BotConfiguration botConfiguration)
+        public static IServiceCollection AddTelegramBotClient(this IServiceCollection serviceCollection)
         {
-            var client = new TelegramBotClient("7571198121:AAEhYDJDesEkGkr8oM27LpUakviYm570RNY");
-            var webHook = "https://connect-bot-qa-fee85d1f3d52.herokuapp.com/api/message/update";
+            var botToken = Environment.GetEnvironmentVariable("BOT_TOKEN");
+            var botBaseUrl = Environment.GetEnvironmentVariable("BOT_BASE_URL");
+            if (string.IsNullOrEmpty(botToken) || string.IsNullOrEmpty(botBaseUrl))
+            {
+                throw new ArgumentException("Bot credentials are empty");
+            }
+            var client = new TelegramBotClient(botToken);
+            var webHook = $"{botBaseUrl}/api/message/update";
             Console.WriteLine(webHook);
             Debug.WriteLine(webHook);
             client.SetWebhookAsync(webHook).Wait();
