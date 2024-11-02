@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 
 namespace ConnectBot
 {
@@ -15,8 +14,6 @@ namespace ConnectBot
             }
             var client = new TelegramBotClient(botToken);
             var webHook = $"{botBaseUrl}/api/message/update";
-            Console.WriteLine(webHook);
-            Debug.WriteLine(webHook);
             client.SetWebhookAsync(webHook).Wait();
 
             return serviceCollection
