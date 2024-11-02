@@ -5,6 +5,8 @@ using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables("APPSETTING_");
+
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
@@ -27,6 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 
