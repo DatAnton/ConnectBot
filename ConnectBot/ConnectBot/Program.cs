@@ -33,12 +33,7 @@ builder.Services.AddTelegramBotClient(builder.Configuration);
 
 var app = builder.Build();
 
-// Apply migrations at application startup
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-//    dbContext.Database.Migrate();
-//}
+app.MigrateDatabase<ApplicationDbContext>();
 
 if (app.Environment.IsDevelopment())
 {
