@@ -18,7 +18,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "BOT_TOKEN": "",
-        "BOT_BASE_URL": ""
+        "BOT_BASE_URL": "",
+        "CONNECTION_STRING": ""
       }
     },
     "IIS Express": {

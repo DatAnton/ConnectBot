@@ -1,6 +1,8 @@
 using ConnectBot;
 using ConnectBot.Domain.Interfaces;
 using ConnectBot.Infrastructure.Services;
+using ConnectBot.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,10 +17,28 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var connectionString = !string.IsNullOrEmpty(builder.Configuration.GetConnectionString("DevelopmentContext"))
+    ? builder.Configuration.GetConnectionString("DevelopmentContext")
+    : Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new ArgumentException("Empty connection string");
+}
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
+
 builder.Services.AddScoped<ICommandService, CommandService>();
-builder.Services.AddTelegramBotClient();
+builder.Services.AddTelegramBotClient(builder.Configuration);
 
 var app = builder.Build();
+
+// Apply migrations at application startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {

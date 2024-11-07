@@ -4,10 +4,16 @@ namespace ConnectBot
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddTelegramBotClient(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddTelegramBotClient(this IServiceCollection serviceCollection,
+            IConfiguration configuration)
         {
-            var botToken = Environment.GetEnvironmentVariable("BOT_TOKEN");
-            var botBaseUrl = Environment.GetEnvironmentVariable("BOT_BASE_URL");
+            var botToken = !string.IsNullOrEmpty(configuration.GetValue<string>("BOT_TOKEN"))
+                ? configuration.GetValue<string>("BOT_TOKEN")
+                : Environment.GetEnvironmentVariable("BOT_TOKEN");
+
+            var botBaseUrl = !string.IsNullOrEmpty(configuration.GetValue<string>("BOT_BASE_URL"))
+                ? configuration.GetValue<string>("BOT_BASE_URL")
+                : Environment.GetEnvironmentVariable("BOT_BASE_URL");
             if (string.IsNullOrEmpty(botToken) || string.IsNullOrEmpty(botBaseUrl))
             {
                 throw new ArgumentException("Bot credentials are empty");
