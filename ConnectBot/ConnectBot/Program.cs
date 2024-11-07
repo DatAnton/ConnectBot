@@ -33,7 +33,7 @@ builder.Services.AddTelegramBotClient(builder.Configuration);
 
 var app = builder.Build();
 
-app.MigrateDatabase<ApplicationDbContext>();
+//app.MigrateDatabase<ApplicationDbContext>();
 
 if (app.Environment.IsDevelopment())
 {
