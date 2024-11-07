@@ -19,7 +19,7 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = !string.IsNullOrEmpty(builder.Configuration.GetConnectionString("DevelopmentContext"))
     ? builder.Configuration.GetConnectionString("DevelopmentContext")
-    : Environment.GetEnvironmentVariable("CONNECTION_STRING");
+    : Environment.GetEnvironmentVariable("DATABASE_URL");
 
 if (string.IsNullOrEmpty(connectionString))
 {
