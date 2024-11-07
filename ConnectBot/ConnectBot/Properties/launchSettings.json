@@ -17,8 +17,8 @@
       "applicationUrl": "http://localhost:8443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "BOT_TOKEN": "7571198121:AAEhYDJDesEkGkr8oM27LpUakviYm570RNY",
-        "BOT_BASE_URL": "https://4b66-87-94-142-83.ngrok-free.app",
+        "BOT_TOKEN": "",
+        "BOT_BASE_URL": "",
         "DATABASE_URL": ""
       }
     },
