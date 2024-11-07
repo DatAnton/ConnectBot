@@ -7,13 +7,23 @@ namespace ConnectBot
         public static IServiceCollection AddTelegramBotClient(this IServiceCollection serviceCollection,
             IConfiguration configuration)
         {
-            var botToken = !string.IsNullOrEmpty(configuration.GetValue<string>("BOT_TOKEN"))
+            //var botToken = !string.IsNullOrEmpty(configuration.GetValue<string>("BOT_TOKEN"))
+            //    ? configuration.GetValue<string>("BOT_TOKEN")
+            //    : Environment.GetEnvironmentVariable("BOT_TOKEN");
+
+            //var botBaseUrl = !string.IsNullOrEmpty(configuration.GetValue<string>("BOT_BASE_URL"))
+            //    ? configuration.GetValue<string>("BOT_BASE_URL")
+            //    : Environment.GetEnvironmentVariable("BOT_BASE_URL");
+
+            var isProductionEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
+            var botToken = !isProductionEnv
                 ? configuration.GetValue<string>("BOT_TOKEN")
                 : Environment.GetEnvironmentVariable("BOT_TOKEN");
 
-            var botBaseUrl = !string.IsNullOrEmpty(configuration.GetValue<string>("BOT_BASE_URL"))
+            var botBaseUrl = !isProductionEnv
                 ? configuration.GetValue<string>("BOT_BASE_URL")
                 : Environment.GetEnvironmentVariable("BOT_BASE_URL");
+
             if (string.IsNullOrEmpty(botToken) || string.IsNullOrEmpty(botBaseUrl))
             {
                 throw new ArgumentException("Bot credentials are empty");
