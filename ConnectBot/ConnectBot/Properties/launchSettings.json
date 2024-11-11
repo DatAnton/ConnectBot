@@ -19,7 +19,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "BOT_TOKEN": "",
         "BOT_BASE_URL": "",
-        "DATABASE_URL": ""
+        "DATABASE_URL": "",
+        "SECRET_TOKEN": ""
       }
     },
     "IIS Express": {
