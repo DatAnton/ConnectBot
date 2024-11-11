@@ -1,11 +1,12 @@
-﻿using Telegram.Bot;
+﻿using ConnectBot.Domain.Models;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace ConnectBot.Domain.Models
+namespace ConnectBot.Application
 {
-    public abstract class TelegramCommand
+    public abstract class TelegramCommand : ITelegramBotCommand
     {
         public abstract string Name { get; }
 

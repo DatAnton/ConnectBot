@@ -14,11 +14,11 @@ namespace ConnectBot.Controllers
         private readonly ICommandService _commandService;
         private readonly string _secretToken;
 
-        public BotController(ICommandService commandService, ITelegramBotClient telegramBotClient)
+        public BotController(IConfiguration configuration, ICommandService commandService, ITelegramBotClient telegramBotClient)
         {
             _commandService = commandService;
             _telegramBotClient = telegramBotClient;
-            _secretToken = Environment.GetEnvironmentVariable("SECRET_TOKEN") ?? string.Empty;
+            _secretToken = configuration.GetValue<string>("SECRET_TOKEN") ?? Environment.GetEnvironmentVariable("SECRET_TOKEN") ?? string.Empty;
         }
 
         [HttpPost]

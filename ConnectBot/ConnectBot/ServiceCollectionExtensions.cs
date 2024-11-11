@@ -15,7 +15,9 @@ namespace ConnectBot
                 ? Environment.GetEnvironmentVariable("BOT_BASE_URL")
                 : configuration.GetValue<string>("BOT_BASE_URL");
 
-            var secretToken = Environment.GetEnvironmentVariable("SECRET_TOKEN");
+            var secretToken = isHerokuServer
+                ? Environment.GetEnvironmentVariable("SECRET_TOKEN")
+                : configuration.GetValue<string>("SECRET_TOKEN");
 
             if (string.IsNullOrEmpty(botToken) || string.IsNullOrEmpty(botBaseUrl) || string.IsNullOrEmpty(secretToken))
             {

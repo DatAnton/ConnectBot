@@ -6,17 +6,16 @@ namespace ConnectBot.Infrastructure.Services
 {
     public class CommandService : ICommandService
     {
-        private readonly List<TelegramCommand> _commands;
+        private readonly List<ITelegramBotCommand> _commands;
 
         public CommandService()
         {
-            _commands = new List<TelegramCommand>
+            _commands = new List<ITelegramBotCommand>
             {
-                new StartCommand(),
-                new MainCommand()
+                new StartCommand()
             };
         }
-        public List<TelegramCommand> Get()
+        public List<ITelegramBotCommand> Get()
         {
             return _commands;
         }

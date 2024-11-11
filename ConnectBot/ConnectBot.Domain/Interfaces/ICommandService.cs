@@ -4,6 +4,6 @@ namespace ConnectBot.Domain.Interfaces
 {
     public interface ICommandService
     {
-        List<TelegramCommand> Get();
+        List<ITelegramBotCommand> Get();
     }
 }
