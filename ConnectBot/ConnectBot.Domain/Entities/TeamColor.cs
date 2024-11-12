@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string ColorSymbol { get; set; }
         public IList<EventParticipation> EventParticipations { get; set; }
     }
 }

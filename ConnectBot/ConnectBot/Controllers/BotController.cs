@@ -1,7 +1,6 @@
 ﻿using ConnectBot.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace ConnectBot.Controllers
@@ -10,15 +9,18 @@ namespace ConnectBot.Controllers
     [Route("api/message/update")]
     public class BotController : Controller
     {
-        private readonly ITelegramBotClient _telegramBotClient;
-        private readonly ICommandService _commandService;
+        private readonly ICommandUpdateHandler _updateHandler;
         private readonly string _secretToken;
 
-        public BotController(IConfiguration configuration, ICommandService commandService, ITelegramBotClient telegramBotClient)
+        public BotController(IConfiguration configuration, ICommandUpdateHandler commandService)
         {
-            _commandService = commandService;
-            _telegramBotClient = telegramBotClient;
-            _secretToken = configuration.GetValue<string>("SECRET_TOKEN") ?? Environment.GetEnvironmentVariable("SECRET_TOKEN") ?? string.Empty;
+            _updateHandler = commandService;
+            _secretToken = configuration.GetValue<string>("SECRET_TOKEN") ??
+                           Environment.GetEnvironmentVariable("SECRET_TOKEN") ?? "";
+            if (string.IsNullOrEmpty(_secretToken))
+            {
+                throw new ArgumentException("Secret token cannot be empty");
+            }
         }
 
         [HttpPost]
@@ -29,21 +31,9 @@ namespace ConnectBot.Controllers
             {
                 return Unauthorized("Unauthorized Request");
             }
-            var message = update.Message;
 
-            if (message == null)
-            {
-                return Ok();
-            }
+            await _updateHandler.Handle(update);
 
-            foreach (var command in _commandService.Get())
-            {
-                if (command.Contains(message))
-                {
-                    await command.Execute(message, _telegramBotClient);
-                    break;
-                }
-            }
             return Ok();
         }
     }

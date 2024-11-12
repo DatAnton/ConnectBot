@@ -1,10 +1,11 @@
 ﻿using ConnectBot.Domain.Entities;
+using ConnectBot.Domain.Interfaces;
 using ConnectBot.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConnectBot.Persistence
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

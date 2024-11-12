@@ -1,6 +1,6 @@
 ﻿using Telegram.Bot;
 
-namespace ConnectBot
+namespace ConnectBot.Extensions
 {
     public static class ServiceCollectionExtensions
     {

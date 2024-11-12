@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ConnectBot
+namespace ConnectBot.Extensions
 {
     public static class WebApplicationBuilderExtension
     {
