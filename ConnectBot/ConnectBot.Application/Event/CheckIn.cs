@@ -69,7 +69,7 @@ namespace ConnectBot.Application.Event
 
                 await _botService.SendMessage(request.Message.Chat.Id,
                     TextConstants.CheckedInText(entity.UniqueNumber.ToString(),
-                        $"{teamColor.Name} {teamColor.ColorSymbol}"));
+                        $"{teamColor.Name} {teamColor.ColorSymbol}", todayEvent.Name));
             }
         }
     }

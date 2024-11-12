@@ -17,7 +17,7 @@
 
         public static string NotFoundTodayEventText = "Нет событий сегодня";
         public static string AlreadyCheckedInText = $"Ты уже зачекинился. Наслаждайся там! {EmojiConstants.WowEmoji}";
-        public static Func<string, string, string> CheckedInText = (uniqueNumber, teamColor) => $"{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\nНаслаждайся там! {EmojiConstants.WowEmoji}";
+        public static Func<string, string, string, string> CheckedInText = (uniqueNumber, teamColor, connectName) => $"{connectName}\r\n\r\n{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\nНаслаждайся там! {EmojiConstants.WowEmoji}";
 
         public static Func<string, string, string> AllParticipationsText = (eventName, usersList) => $"Все участники {eventName}: \r\n\r\n{usersList}";
 
