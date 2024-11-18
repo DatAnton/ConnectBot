@@ -1,0 +1,52 @@
+# cloudbuild.yaml
+
+steps:
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: 
+      [
+        'build',
+        '-t', '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}',
+        '.'
+      ]
+    env:
+      - 'PROJECT_ID=${_PROJECT_ID}'
+      - 'REGION=${_REGION}'
+      - 'REPO_NAME=${_REPO_NAME}'
+      - 'IMAGE_NAME=${_IMAGE_NAME}'
+
+  # Step 2: Push the Docker image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}'
+      ]
+    env:
+      - 'PROJECT_ID=${_PROJECT_ID}'
+      - 'REGION=${_REGION}'
+      - 'REPO_NAME=${_REPO_NAME}'
+      - 'IMAGE_NAME=${_IMAGE_NAME}'
+
+  # Step 3: Deploy the Docker image to Google Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - '${_SERVICE_NAME}'
+      - --image=${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}
+      - --region=${_REGION}
+      - --platform=managed
+      - --allow-unauthenticated
+    env:
+      - 'PROJECT_ID=${_PROJECT_ID}'
+      - 'REGION=${_REGION}'
+      - 'SERVICE_NAME=${_SERVICE_NAME}'
+
+substitutions:
+  _PROJECT_ID: 'connectbot-qa'          # Replace with your GCP Project ID
+  _REGION: 'europe-north1'                   # Replace with your desired GCP region
+  _REPO_NAME: 'connectbot'            # Replace with your Artifact Registry repository name
+  _IMAGE_NAME: 'gcr.io/cloudrun/placeholder@sha256:11903d96b51fce5e37f1f0dff3429e71b57a9e4a9601eede45c9ff11cd1ee3bf'          # Replace with the desired image name
+  _SERVICE_NAME: '831186970672-compute@developer.gserviceaccount.com'      # Replace with your Cloud Run service name
