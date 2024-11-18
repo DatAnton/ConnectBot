@@ -26,6 +26,7 @@ var isHerokuServer = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"
 
 builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
 {
+    //test1
     string connectString;
     if (isHerokuServer)
     {
