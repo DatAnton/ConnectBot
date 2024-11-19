@@ -17,10 +17,10 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 8080
 
 # Set the environment variable for ASP.NET Core
-ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_URLS=http://+:8080
 
 # Run the application
 ENTRYPOINT ["dotnet", "ConnectBot.dll"]
