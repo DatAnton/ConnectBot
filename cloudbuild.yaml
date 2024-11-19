@@ -21,7 +21,7 @@ steps:
     args:
       [
         'push',
-        '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:'
+        '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:latest'
       ]
     env:
       - 'PROJECT_ID=${_PROJECT_ID}'
