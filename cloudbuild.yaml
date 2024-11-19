@@ -7,7 +7,7 @@ steps:
     args: 
       [
         'build',
-        '-t', '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}',
+        '-t', '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:$COMMIT_SHA',
         '.'
       ]
     env:
@@ -21,7 +21,7 @@ steps:
     args:
       [
         'push',
-        '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}'
+        '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:$COMMIT_SHA'
       ]
     env:
       - 'PROJECT_ID=${_PROJECT_ID}'
@@ -36,7 +36,7 @@ steps:
       - run
       - deploy
       - '${_SERVICE_NAME}'
-      - --image=${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}
+      - --image=${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}:$COMMIT_SHA
       - --region=${_REGION}
       - --platform=managed
       - --allow-unauthenticated
