@@ -50,3 +50,6 @@ substitutions:
   _REPO_NAME: 'connectbot'            # Replace with your Artifact Registry repository name
   _IMAGE_NAME: 'gcr.io/cloudrun/placeholder@sha256:11903d96b51fce5e37f1f0dff3429e71b57a9e4a9601eede45c9ff11cd1ee3bf'          # Replace with the desired image name
   _SERVICE_NAME: '831186970672-compute@developer.gserviceaccount.com'      # Replace with your Cloud Run service name
+
+options:
+  logging: CLOUD_LOGGING_ONLY
