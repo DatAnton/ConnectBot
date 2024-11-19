@@ -8,7 +8,7 @@ steps:
         'build',
         '-t', '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}',
         '-f ./ConnectBot/Dockerfile',
-        './ConnectBot'
+        '.'
       ]
     env:
       - 'PROJECT_ID=${_PROJECT_ID}'
