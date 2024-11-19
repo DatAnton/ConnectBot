@@ -3,11 +3,11 @@
 steps:
   # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
+    dir: './ConnectBot'
     args: 
       [
         'build',
         '-t', '${_REGION}-docker.pkg.dev/${_PROJECT_ID}/${_REPO_NAME}/${_IMAGE_NAME}',
-        '-f ./ConnectBot/Dockerfile',
         '.'
       ]
     env:
