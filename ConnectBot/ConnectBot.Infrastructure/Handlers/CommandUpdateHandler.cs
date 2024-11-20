@@ -7,8 +7,11 @@ using ConnectBot.Application.Users;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
 using System.Text.RegularExpressions;
+using ConnectBot.Domain.Entities;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using CommunicationRequest = ConnectBot.Application.Event.CommunicationRequest;
+using Feedback = ConnectBot.Application.Event.Feedback;
 
 namespace ConnectBot.Infrastructure.Handlers
 {
@@ -16,11 +19,13 @@ namespace ConnectBot.Infrastructure.Handlers
     {
         private readonly IMediator _mediator;
         private readonly UserCache _userCache;
+        private readonly IApplicationDbContext _dbContext;
 
-        public CommandUpdateHandler(IMediator mediator, UserCache userCache)
+        public CommandUpdateHandler(IMediator mediator, UserCache userCache, IApplicationDbContext dbContext)
         {
             _mediator = mediator;
             _userCache = userCache;
+            _dbContext = dbContext;
         }
 
         private const string _emojisPattern =
@@ -68,8 +73,17 @@ namespace ConnectBot.Infrastructure.Handlers
                     await HandleCallBackQuery(update.CallbackQuery);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _dbContext.Logs.AddAsync(new Log
+                {
+                    Message = ex.Message,
+                    InnerException = ex.InnerException?.Message,
+                    CreatedAt = DateTime.UtcNow,
+                    MessageText = update.Message?.Text,
+                    ChatId = update.Message?.Chat?.Id,
+                });
+                await _dbContext.SaveChangesAsync(CancellationToken.None);
             }
         }
 

@@ -22,5 +22,6 @@ namespace ConnectBot.Persistence
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<CommunicationRequest> CommunicationRequests { get; set; }
         public DbSet<EventParticipation> EventParticipations { get; set; }
+        public DbSet<Log> Logs { get; set; }
     }
 }
