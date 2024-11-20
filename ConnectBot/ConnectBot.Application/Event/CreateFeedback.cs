@@ -53,8 +53,6 @@ namespace ConnectBot.Application.Event
                 await _context.Feedbacks.AddAsync(entity, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                _userCache.SetUserMode(currentUser.ChatId, UserState.None);
-
                 await _botService.SendMessage(request.Message.Chat.Id, TextConstants.FeedbackResponseText);
 
                 foreach (var adminChat in await _userCache.GetAdminChatIds(cancellationToken))

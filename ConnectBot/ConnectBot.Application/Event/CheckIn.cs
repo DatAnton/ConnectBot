@@ -58,7 +58,6 @@ namespace ConnectBot.Application.Event
                     teamColorId = todayEvent.NumberOfTeams;
                 }
 
-                _eventCache.AddParticipation(currentUser.Id);
                 var entity = new EventParticipation
                 {
                     CheckedInAt = DateTime.UtcNow,
@@ -69,6 +68,7 @@ namespace ConnectBot.Application.Event
                 };
                 await _context.EventParticipations.AddAsync(entity, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
+                _eventCache.AddParticipation(currentUser.Id);
 
                 var teamColor = await _eventCache.GetTeamColorById(teamColorId, cancellationToken);
 

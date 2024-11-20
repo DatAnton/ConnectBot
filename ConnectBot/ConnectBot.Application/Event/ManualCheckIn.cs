@@ -43,6 +43,11 @@ namespace ConnectBot.Application.Event
                     throw new Exception("Manual check in forbidden");
                 }
 
+                if (!_userCache.IsUserInMode(currentUser.ChatId, UserState.ManualCheckInMode))
+                {
+                    await _botService.SendMessage(request.Message.Chat.Id, "User not in manual check in mode");
+                }
+
                 var todayEvent = await _eventCache.GetTodayEvent(cancellationToken);
                 if (todayEvent == null)
                 {
@@ -80,7 +85,6 @@ namespace ConnectBot.Application.Event
                     teamColorId = todayEvent.NumberOfTeams;
                 }
 
-                _eventCache.AddParticipation(passiveUser.Id);
                 var entity = new EventParticipation
                 {
                     CheckedInAt = DateTime.UtcNow,
@@ -91,6 +95,7 @@ namespace ConnectBot.Application.Event
                 };
                 await _context.EventParticipations.AddAsync(entity, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
+                _eventCache.AddParticipation(passiveUser.Id);
 
                 var teamColor = await _eventCache.GetTeamColorById(teamColorId, cancellationToken);
 

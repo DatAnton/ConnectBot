@@ -98,21 +98,19 @@ namespace ConnectBot.Infrastructure.Handlers
                 return;
             }
 
-            if (_userCache.IsUserInMode(message.From?.Id, UserState.FeedbackMode)) 
+            if (_userCache.IsUserInTypeMode(message.From?.Id))
             {
                 if (!_router.ContainsKey(GetSanitizedCommandName(message.Text)))
                 {
-                    await _mediator.Send(new CreateFeedback.Command().SetMessage(message));
-                    return;
-                }
-                _userCache.SetUserMode(message.From?.Id, UserState.None);
-            }
-
-            if (_userCache.IsUserInMode(message.From?.Id, UserState.ManualCheckInMode))
-            {
-                if (!_router.ContainsKey(GetSanitizedCommandName(message.Text)))
-                {
-                    await _mediator.Send(new ManualCheckIn.Command().SetMessage(message));
+                    if (_userCache.IsUserInMode(message.From?.Id, UserState.FeedbackMode))
+                    {
+                        await _mediator.Send(new CreateFeedback.Command().SetMessage(message));
+                    }
+                    if (_userCache.IsUserInMode(message.From?.Id, UserState.ManualCheckInMode))
+                    {
+                        await _mediator.Send(new ManualCheckIn.Command().SetMessage(message));
+                    }
+                    _userCache.SetUserMode(message.From?.Id, UserState.None);
                     return;
                 }
                 _userCache.SetUserMode(message.From?.Id, UserState.None);

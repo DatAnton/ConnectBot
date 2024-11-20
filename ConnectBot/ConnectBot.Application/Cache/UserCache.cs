@@ -28,6 +28,12 @@ namespace ConnectBot.Application.Cache
                    inState == userState;
         }
 
+        public bool IsUserInTypeMode(long? chatId)
+        {
+            return chatId.HasValue && _userModes.TryGetValue(chatId.Value, out UserState inState) &&
+                   inState != UserState.None;
+        }
+
         public void SetUserMode(long? chatId, UserState state)
         {
             if(chatId.HasValue)
