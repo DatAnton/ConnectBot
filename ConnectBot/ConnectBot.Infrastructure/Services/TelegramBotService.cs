@@ -1,4 +1,5 @@
-﻿using ConnectBot.Application.Constants;
+﻿using ConnectBot.Application.Cache;
+using ConnectBot.Application.Constants;
 using ConnectBot.Domain.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -10,10 +11,12 @@ namespace ConnectBot.Infrastructure.Services
     public class TelegramBotService : ITelegramBotService
     {
         private readonly ITelegramBotClient _botClient;
+        private readonly UserCache _userCache;
 
-        public TelegramBotService(ITelegramBotClient botClient)
+        public TelegramBotService(ITelegramBotClient botClient, UserCache userCache)
         {
             _botClient = botClient;
+            _userCache = userCache;
         }
 
         public async Task SendMessage(ChatId chatId, string text, IReplyMarkup? replyMarkup)
@@ -23,12 +26,12 @@ namespace ConnectBot.Infrastructure.Services
 
         public async Task SendMessage(ChatId chatId, string text)
         {
-            await SendMessage(chatId, text, GetReplyKeyboardMarkup(chatId));
+            await SendMessage(chatId, text, await GetReplyKeyboardMarkup(chatId));
         }
 
-        private ReplyKeyboardMarkup GetReplyKeyboardMarkup(ChatId chatId)
+        private async Task<ReplyKeyboardMarkup> GetReplyKeyboardMarkup(ChatId chatId)
         {
-            if (chatId == UtilConstants.adminChatId)
+            if (await _userCache.IsAdminChat(chatId.Identifier))
             {
                 return new ReplyKeyboardMarkup(new[]
                 {

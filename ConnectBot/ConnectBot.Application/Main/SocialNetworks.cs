@@ -36,6 +36,10 @@ namespace ConnectBot.Application.Main
                     },
                     new[]
                     {
+                        InlineKeyboardButton.WithUrl(TextConstants.SocialNetworksPhotosChannelText, "https://t.me/+hkkfGK1ZiOM3YjNi")
+                    },
+                    new[]
+                    {
                         InlineKeyboardButton.WithUrl(TextConstants.SocialNetworksSiteText, "https://www.silachurch.fi/")
                     }
                 });

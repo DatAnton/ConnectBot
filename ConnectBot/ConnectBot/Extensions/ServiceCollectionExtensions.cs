@@ -5,17 +5,17 @@ namespace ConnectBot.Extensions
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddTelegramBotClient(this IServiceCollection serviceCollection,
-            IConfiguration configuration, bool isHerokuServer)
+            IConfiguration configuration, bool isProduction)
         {
-            var botToken = isHerokuServer
+            var botToken = isProduction
                 ? Environment.GetEnvironmentVariable("BOT_TOKEN")
                 : configuration.GetValue<string>("BOT_TOKEN");
 
-            var botBaseUrl = isHerokuServer
+            var botBaseUrl = isProduction
                 ? Environment.GetEnvironmentVariable("BOT_BASE_URL")
                 : configuration.GetValue<string>("BOT_BASE_URL");
 
-            var secretToken = isHerokuServer
+            var secretToken = isProduction
                 ? Environment.GetEnvironmentVariable("SECRET_TOKEN")
                 : configuration.GetValue<string>("SECRET_TOKEN");
 

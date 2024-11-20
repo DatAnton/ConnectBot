@@ -6,33 +6,27 @@ namespace ConnectBot.Infrastructure.Services
 {
     public class EventService : IEventService
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IDbContextFactory _dbContextFactory;
 
-        public EventService(IApplicationDbContext context)
+        public EventService(IDbContextFactory dbContextFactory)
         {
-            _context = context;
+            _dbContextFactory = dbContextFactory;
         }
         public async Task<Event?> GetTodayEvent(CancellationToken cancellationToken)
         {
+            using var dbContext = _dbContextFactory.CreateDbContext();
             var todayEvent =
-                await _context.Events.FirstOrDefaultAsync(e => e.StartDateTime.Date == DateTime.UtcNow.Date,
+                await dbContext.Events.FirstOrDefaultAsync(e => e.StartDateTime.Date == DateTime.UtcNow.Date,
                     cancellationToken);
             return todayEvent;
         }
 
-        public async Task<(int, TeamColor)> GetEventUniqueNumberAndTeam(User user, Event todayEvent, CancellationToken cancellationToken)
+        public async Task<List<TeamColor>> GetTeamColors(CancellationToken cancellationToken)
         {
-            var participationsCount =
-                await _context.EventParticipations.CountAsync(ep => ep.EventId == todayEvent.Id, cancellationToken);
-
-            var uniqueNumber = participationsCount + 1;
-
-            var teamColorId = uniqueNumber % todayEvent.NumberOfTeams;
-
-            var teamColor =
-                await _context.TeamColors.FirstOrDefaultAsync(tc => tc.Id == teamColorId, cancellationToken);
-
-            return (uniqueNumber, teamColor);
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            var teamColors =
+                await dbContext.TeamColors.ToListAsync(cancellationToken);
+            return teamColors;
         }
     }
 }

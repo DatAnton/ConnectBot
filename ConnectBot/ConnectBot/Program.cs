@@ -8,6 +8,7 @@ using ConnectBot.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 using System.Text.RegularExpressions;
+using ConnectBot.Infrastructure.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,14 +22,12 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var isHerokuServer = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "QA" ||
-                     Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
+var isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
 
 builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
 {
-    //test1
     string connectString;
-    if (isHerokuServer)
+    if (isProduction)
     {
         var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
         connectString =
@@ -41,16 +40,19 @@ builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(optio
     options.UseNpgsql(connectString);
 });
 
-// caches
-builder.Services.AddSingleton<UserCache>();
-
-// tools part 1
-builder.Services.AddTelegramBotClient(builder.Configuration, isHerokuServer);
-builder.Services.AddScoped<ITelegramBotService, TelegramBotService>();
+builder.Services.AddSingleton<IDbContextFactory, DbContextFactory>();
 
 // services
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IEventService, EventService>();
+
+// caches
+builder.Services.AddSingleton<UserCache>();
+builder.Services.AddSingleton<EventCache>();
+
+// tools part 1
+builder.Services.AddTelegramBotClient(builder.Configuration, isProduction);
+builder.Services.AddScoped<ITelegramBotService, TelegramBotService>();
 
 // tools part 2
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Start.Handler).Assembly));

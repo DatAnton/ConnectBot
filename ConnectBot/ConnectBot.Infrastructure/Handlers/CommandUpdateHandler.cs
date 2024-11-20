@@ -56,7 +56,6 @@ namespace ConnectBot.Infrastructure.Handlers
 
         public async Task Handle(Update update)
         {
-            //ToDO: check that user accepted privacy policy
             //ToDo: Add error handler
             if (update.Message != null)
             {
@@ -73,7 +72,8 @@ namespace ConnectBot.Infrastructure.Handlers
             if (message is not { Type: MessageType.Text } || string.IsNullOrEmpty(message.Text))
                 throw new ArgumentException("Wrong type of message");
 
-            if (_userCache.IsUserInFeedbackMode(message.From?.Id)) //check that it's not the same command pinned twice
+            if (_userCache.IsUserInFeedbackMode(message.From?.Id) &&
+                !_router.ContainsKey(GetSanitizedCommandName(message.Text))) 
             {
                 await _mediator.Send(new CreateFeedback.Command().SetMessage(message));
             }

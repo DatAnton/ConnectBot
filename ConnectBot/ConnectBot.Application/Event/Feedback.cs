@@ -3,7 +3,6 @@ using ConnectBot.Application.Constants;
 using ConnectBot.Application.Models;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ConnectBot.Application.Event
 {

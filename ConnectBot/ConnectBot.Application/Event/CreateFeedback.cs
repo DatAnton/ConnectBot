@@ -3,7 +3,6 @@ using ConnectBot.Application.Constants;
 using ConnectBot.Application.Models;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ConnectBot.Application.Event
 {
@@ -29,8 +28,7 @@ namespace ConnectBot.Application.Event
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                var currentUser =
-                    await _context.Users.FirstOrDefaultAsync(u => u.ChatId == request.Message.Chat.Id, cancellationToken);
+                var currentUser = await _userCache.GetUserByChatId(request.Message.Chat.Id, cancellationToken);
                 if (currentUser == null)
                 {
                     throw new Exception("User not found");
@@ -38,12 +36,12 @@ namespace ConnectBot.Application.Event
 
                 if (!_userCache.IsUserInFeedbackMode(currentUser.ChatId))
                 {
-                    throw new Exception("User not in feedback mode");
+                    await _botService.SendMessage(request.Message.Chat.Id, "User not in feedback mode");
                 }
 
                 if (string.IsNullOrEmpty(request.Message.Text))
                 {
-                    throw new ArgumentNullException(nameof(request.Message.Text), "Empty user message in feedback");
+                    await _botService.SendMessage(request.Message.Chat.Id, "Empty user message in feedback");
                 }
 
                 var entity = new Domain.Entities.Feedback
@@ -59,7 +57,10 @@ namespace ConnectBot.Application.Event
 
                 await _botService.SendMessage(request.Message.Chat.Id, TextConstants.FeedbackResponseText);
 
-                await _botService.SendMessage(UtilConstants.adminChatId, TextConstants.NewFeedbackHandlerText(currentUser.DisplayName, entity.Text));
+                foreach (var adminChat in await _userCache.GetAdminChatIds(cancellationToken))
+                {
+                    await _botService.SendMessage(adminChat, TextConstants.NewFeedbackHandlerText(currentUser.DisplayName, entity.Text));
+                }
             }
         }
     }

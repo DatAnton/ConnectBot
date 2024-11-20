@@ -1,9 +1,9 @@
-﻿using ConnectBot.Application.Constants;
+﻿using ConnectBot.Application.Cache;
+using ConnectBot.Application.Constants;
 using ConnectBot.Application.Models;
 using ConnectBot.Domain.Entities;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ConnectBot.Application.Event
 {
@@ -18,54 +18,55 @@ namespace ConnectBot.Application.Event
         {
             private readonly ITelegramBotService _botService;
             private readonly IApplicationDbContext _context;
-            private readonly IUserService _userService;
-            private readonly IEventService _eventService;
+            private readonly UserCache _userCache;
+            private readonly EventCache _eventCache;
 
-            public Handler(ITelegramBotService botService, IApplicationDbContext context, IUserService userService, IEventService eventService)
+            public Handler(ITelegramBotService botService, IApplicationDbContext context, UserCache userCache, EventCache eventCache)
             {
                 _botService = botService;
                 _context = context;
-                _userService = userService;
-                _eventService = eventService;
+                _userCache = userCache;
+                _eventCache = eventCache;
             }
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                var currentUser = await _userService.GetUserByChatId(request.Message.Chat.Id, cancellationToken);
+                var currentUser = await _userCache.GetUserByChatId(request.Message.Chat.Id, cancellationToken);
                 if (currentUser == null)
                 {
                     throw new Exception("User not found");
                 }
 
-                var todayEvent = await _eventService.GetTodayEvent(cancellationToken);
+                var todayEvent = await _eventCache.GetTodayEvent(cancellationToken);
                 if (todayEvent == null)
                 {
                     await _botService.SendMessage(request.Message.Chat.Id, TextConstants.NotFoundTodayEventText);
                     return;
                 }
 
-                var isAlreadyCheckedIn = await _context.EventParticipations.AnyAsync(
-                    ep => ep.EventId == todayEvent.Id && ep.UserId == currentUser.Id, cancellationToken);
-                if (isAlreadyCheckedIn)
+                if (_eventCache.IsOnEvent(currentUser.Id))
                 {
                     await _botService.SendMessage(request.Message.Chat.Id, TextConstants.AlreadyCheckedInText);
                     return;
                 }
 
-                var (uniqueNumber, teamColor) =
-                    await _eventService.GetEventUniqueNumberAndTeam(currentUser, todayEvent, cancellationToken);
+                var uniqueNumber = _eventCache.GetCurrentParticipationsCount + 1;
 
+                var teamColorId = uniqueNumber % todayEvent.NumberOfTeams;
+
+                _eventCache.AddParticipation(currentUser.Id);
                 var entity = new EventParticipation
                 {
                     CheckedInAt = DateTime.UtcNow,
                     EventId = todayEvent.Id,
                     UserId = currentUser.Id,
-                    TeamColorId = teamColor.Id,
+                    TeamColorId = teamColorId,
                     UniqueNumber = uniqueNumber
                 };
                 await _context.EventParticipations.AddAsync(entity, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
 
+                var teamColor = await _eventCache.GetTeamColorById(teamColorId, cancellationToken);
 
                 await _botService.SendMessage(request.Message.Chat.Id,
                     TextConstants.CheckedInText(entity.UniqueNumber.ToString(),

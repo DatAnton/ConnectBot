@@ -6,9 +6,10 @@
             $"Привет!{EmojiConstants.HelloEmoji}\r\nЧтобы обеспечить работу нашего бота, мы собираем ваши данные, такие как имя, фамилия и никнейм в Telegram.\r\nИспользование бота означает ваше согласие с нашей политикой конфиденциальности.";
 
         public const string WelcomeBotText =
-            $"Меня зовут Neko.{EmojiConstants.RobotEmoji}\r\nЯ виртуальный робот молодежной команды.{EmojiConstants.TeamEmoji}\r\n\r\nОчень хочу дружить с тобой {EmojiConstants.WowEmoji} \r\nЗалетай к нам, пользуйся кнопками внизу{EmojiConstants.DownEmoji} и наслаждайся.{EmojiConstants.HeartEmoji}";
+            $"Меня зовут Nekko.{EmojiConstants.RobotEmoji}\r\nЯ виртуальный робот молодежной команды.{EmojiConstants.TeamEmoji}\r\n\r\nОчень хочу дружить с тобой {EmojiConstants.WowEmoji} \r\nЗалетай к нам, пользуйся кнопками внизу{EmojiConstants.DownEmoji} и наслаждайся.{EmojiConstants.HeartEmoji}";
 
         public const string CommunicationRequestResponseText = $"{EmojiConstants.HugsEmoji} Мы приняли твой запрос! Скоро кто-нибудь подойдет тебя обнять. Не убегай! {EmojiConstants.LaughingEmoji}";
+        public const string CommunicationRequestAlreadyExistsResponseText = $"{EmojiConstants.HugsEmoji} Ты уже создал запрос на сегодня! Скоро кто-нибудь подойдет тебя обнять. Не убегай! {EmojiConstants.LaughingEmoji}";
         public static Func<string, string> CommunicationRequestHandlerText = author => $"{EmojiConstants.ExclamationMarkEmoji} Запрос на объятия от {author}";
 
         public static string FeedbackText = $"Здесь можно написать сообщение, фидбэк или идеи команде. Кликни на поле ввода, чтобы начать ввод текста. {EmojiConstants.DownEmoji}";
@@ -17,7 +18,7 @@
 
         public static string NotFoundTodayEventText = "Нет событий сегодня";
         public static string AlreadyCheckedInText = $"Ты уже зачекинился. Наслаждайся там! {EmojiConstants.WowEmoji}";
-        public static Func<string, string, string, string> CheckedInText = (uniqueNumber, teamColor, connectName) => $"{connectName}\r\n\r\n{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\nНаслаждайся там! {EmojiConstants.WowEmoji}";
+        public static Func<string, string, string, string> CheckedInText = (uniqueNumber, teamColor, connectName) => $"Добро пожаловать на {connectName}\r\n\r\n{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\nНаслаждайся там! {EmojiConstants.WowEmoji}";
 
         public static Func<string, string, string> AllParticipationsText = (eventName, usersList) => $"Все участники {eventName}: \r\n\r\n{usersList}";
 
@@ -27,6 +28,7 @@
         public const string SocialNetworksText = $"Вот все наши социальные сети. Подписывайся и будь в курсе событий! {EmojiConstants.PhoneEmoji}";
         public const string SocialNetworksInstagramText = $"{EmojiConstants.CameraEmoji} Instagram";
         public const string SocialNetworksTelegramNewsText = $"{EmojiConstants.NoteEmoji} Sila news";
-        public const string SocialNetworksSiteText = $"{EmojiConstants.GlobeEmoji} Sile web-site";
+        public const string SocialNetworksSiteText = $"{EmojiConstants.GlobeEmoji} Sila web-site";
+        public const string SocialNetworksPhotosChannelText = $"{EmojiConstants.PictureEmoji} Sila church PHOTO";
     }
 }

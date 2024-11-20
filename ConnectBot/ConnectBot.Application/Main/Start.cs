@@ -24,7 +24,6 @@ namespace ConnectBot.Application.Main
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                // ToDo: validate that user is not already registered
                 var inlineKeyboard = new InlineKeyboardMarkup(new[]
                 {
                     new[]

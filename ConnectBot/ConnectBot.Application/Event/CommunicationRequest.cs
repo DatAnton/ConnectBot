@@ -1,4 +1,5 @@
-﻿using ConnectBot.Application.Constants;
+﻿using ConnectBot.Application.Cache;
+using ConnectBot.Application.Constants;
 using ConnectBot.Application.Models;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
@@ -17,24 +18,40 @@ namespace ConnectBot.Application.Event
         {
             private readonly ITelegramBotService _botService;
             private readonly IApplicationDbContext _context;
-            private readonly IEventService _eventService;
+            private readonly UserCache _userCache;
+            private readonly EventCache _eventCache;
 
-            public Handler(ITelegramBotService botService, IApplicationDbContext context, IEventService eventService)
+            public Handler(ITelegramBotService botService, IApplicationDbContext context, UserCache userCache,
+                EventCache eventCache)
             {
                 _botService = botService;
                 _context = context;
-                _eventService = eventService;
+                _userCache = userCache;
+                _eventCache = eventCache;
             }
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                var currentUser =
-                    await _context.Users.FirstOrDefaultAsync(u => u.ChatId == request.Message.Chat.Id, cancellationToken);
+                var currentUser = await _userCache.GetUserByChatId(request.Message.Chat.Id, cancellationToken);
                 if (currentUser == null)
                 {
                     throw new Exception("User not found");
                 }
-                var todayEvent = await _eventService.GetTodayEvent(cancellationToken);
+                var todayEvent = await _eventCache.GetTodayEvent(cancellationToken);
+
+                if (todayEvent == null)
+                {
+                    await _botService.SendMessage(request.Message.Chat.Id, TextConstants.NotFoundTodayEventText);
+                    return;
+                }
+
+                var requestExists = await _context.CommunicationRequests.AnyAsync(
+                    cr => cr.AuthorId == currentUser.Id && cr.EventId == todayEvent.Id, cancellationToken);
+                if (requestExists)
+                {
+                    await _botService.SendMessage(request.Message.Chat.Id, TextConstants.CommunicationRequestAlreadyExistsResponseText);
+                    return;
+                }
 
                 var entity = new Domain.Entities.CommunicationRequest
                 {
@@ -47,7 +64,10 @@ namespace ConnectBot.Application.Event
 
                 await _botService.SendMessage(request.Message.Chat.Id, TextConstants.CommunicationRequestResponseText);
 
-                await _botService.SendMessage(UtilConstants.adminChatId, TextConstants.CommunicationRequestHandlerText(currentUser.DisplayName));
+                foreach (var adminChat in await _userCache.GetAdminChatIds(cancellationToken))
+                {
+                    await _botService.SendMessage(adminChat, TextConstants.CommunicationRequestHandlerText(currentUser.DisplayName));
+                }
             }
         }
     }

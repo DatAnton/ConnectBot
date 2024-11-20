@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConnectBot.Domain.Interfaces
 {
-    public interface IApplicationDbContext
+    public interface IApplicationDbContext : IDisposable
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
