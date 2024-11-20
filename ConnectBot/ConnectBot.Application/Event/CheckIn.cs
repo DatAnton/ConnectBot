@@ -53,6 +53,10 @@ namespace ConnectBot.Application.Event
                 var uniqueNumber = _eventCache.GetCurrentParticipationsCount + 1;
 
                 var teamColorId = uniqueNumber % todayEvent.NumberOfTeams;
+                if (teamColorId == 0)
+                {
+                    teamColorId = todayEvent.NumberOfTeams;
+                }
 
                 _eventCache.AddParticipation(currentUser.Id);
                 var entity = new EventParticipation

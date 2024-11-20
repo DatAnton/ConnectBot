@@ -16,7 +16,7 @@ namespace ConnectBot.Infrastructure.Services
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var todayEvent =
-                await dbContext.Events.FirstOrDefaultAsync(e => e.StartDateTime.Date == DateTime.UtcNow.Date,
+                await dbContext.Events.Include(e => e.EventParticipations).FirstOrDefaultAsync(e => e.StartDateTime.Date == DateTime.UtcNow.Date,
                     cancellationToken);
             return todayEvent;
         }

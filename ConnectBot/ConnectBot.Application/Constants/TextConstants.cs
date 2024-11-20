@@ -7,6 +7,7 @@
 
         public const string WelcomeBotText =
             $"Меня зовут Nekko.{EmojiConstants.RobotEmoji}\r\nЯ виртуальный робот молодежной команды.{EmojiConstants.TeamEmoji}\r\n\r\nОчень хочу дружить с тобой {EmojiConstants.WowEmoji} \r\nЗалетай к нам, пользуйся кнопками внизу{EmojiConstants.DownEmoji} и наслаждайся.{EmojiConstants.HeartEmoji}";
+        public const string WrongCommandText = $"{EmojiConstants.ExclamationMarkEmoji} Упс! Неправильная команда. Используй кнопки.";
 
         public const string CommunicationRequestResponseText = $"{EmojiConstants.HugsEmoji} Мы приняли твой запрос! Скоро кто-нибудь подойдет тебя обнять. Не убегай! {EmojiConstants.LaughingEmoji}";
         public const string CommunicationRequestAlreadyExistsResponseText = $"{EmojiConstants.HugsEmoji} Ты уже создал запрос на сегодня! Скоро кто-нибудь подойдет тебя обнять. Не убегай! {EmojiConstants.LaughingEmoji}";

@@ -57,32 +57,47 @@ namespace ConnectBot.Infrastructure.Handlers
         public async Task Handle(Update update)
         {
             //ToDo: Add error handler
-            if (update.Message != null)
+            try
             {
-                await HandleMessage(update.Message);
+                if (update.Message != null)
+                {
+                    await HandleMessage(update.Message);
+                }
+                else if (update.CallbackQuery != null)
+                {
+                    await HandleCallBackQuery(update.CallbackQuery);
+                }
             }
-            else if (update.CallbackQuery != null)
+            catch (Exception)
             {
-                await HandleCallBackQuery(update.CallbackQuery);
             }
         }
 
         private async Task HandleMessage(Message message)
         {
             if (message is not { Type: MessageType.Text } || string.IsNullOrEmpty(message.Text))
-                throw new ArgumentException("Wrong type of message");
-
-            if (_userCache.IsUserInFeedbackMode(message.From?.Id) &&
-                !_router.ContainsKey(GetSanitizedCommandName(message.Text))) 
             {
-                await _mediator.Send(new CreateFeedback.Command().SetMessage(message));
+                await _mediator.Send(new WrongCommand.Command().SetMessage(message));
+                return;
+            }
+
+            if (_userCache.IsUserInFeedbackMode(message.From?.Id)) 
+            {
+                if (!_router.ContainsKey(GetSanitizedCommandName(message.Text)))
+                {
+                    await _mediator.Send(new CreateFeedback.Command().SetMessage(message));
+                    return;
+                }
+                _userCache.SetUserFeedbackMode(message.From?.Id, UserState.None);
+            }
+
+            if (_router.TryGetValue(GetSanitizedCommandName(message.Text), out MessageCommand command))
+            {
+                await _mediator.Send(command.SetMessage(message));
             }
             else
             {
-                if (_router.TryGetValue(GetSanitizedCommandName(message.Text), out MessageCommand command))
-                {
-                    await _mediator.Send(command.SetMessage(message));
-                }
+                await _mediator.Send(new WrongCommand.Command().SetMessage(message));
             }
         }
 

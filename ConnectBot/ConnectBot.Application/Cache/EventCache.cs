@@ -20,7 +20,9 @@ namespace ConnectBot.Application.Cache
             if (_todayEvent == null || _todayEvent.StartDateTime.Date != DateTime.UtcNow.Date)
             {
                 _todayEvent = await _eventService.GetTodayEvent(cancellationToken);
-                _eventParticipations = new List<int>();
+                _eventParticipations = _todayEvent != null
+                    ? _todayEvent.EventParticipations.Select(ep => ep.UserId).ToList()
+                    : new List<int>();
             }
 
             return _todayEvent;
