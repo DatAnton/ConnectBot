@@ -34,7 +34,7 @@ namespace ConnectBot.Application.Event
                     throw new Exception("User not found");
                 }
 
-                if (!_userCache.IsUserInFeedbackMode(currentUser.ChatId))
+                if (!_userCache.IsUserInMode(currentUser.ChatId, UserState.FeedbackMode))
                 {
                     await _botService.SendMessage(request.Message.Chat.Id, "User not in feedback mode");
                 }
@@ -53,7 +53,7 @@ namespace ConnectBot.Application.Event
                 await _context.Feedbacks.AddAsync(entity, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                _userCache.SetUserFeedbackMode(currentUser.ChatId, UserState.None);
+                _userCache.SetUserMode(currentUser.ChatId, UserState.None);
 
                 await _botService.SendMessage(request.Message.Chat.Id, TextConstants.FeedbackResponseText);
 

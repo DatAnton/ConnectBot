@@ -6,7 +6,7 @@ using MediatR;
 
 namespace ConnectBot.Application.Event
 {
-    public class Feedback 
+    public class SetManualCheckInMode
     {
         public class Command : MessageCommand
         {
@@ -26,8 +26,8 @@ namespace ConnectBot.Application.Event
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                _userCache.SetUserMode(request.Message.Chat.Id, UserState.FeedbackMode);
-                await _botService.SendMessage(request.Message.Chat.Id, TextConstants.FeedbackText);
+                _userCache.SetUserMode(request.Message.Chat.Id, UserState.ManualCheckInMode);
+                await _botService.SendMessage(request.Message.Chat.Id, TextConstants.SetManualCheckInModeText);
             }
         }
     }

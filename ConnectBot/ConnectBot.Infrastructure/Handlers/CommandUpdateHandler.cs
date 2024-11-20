@@ -55,6 +55,9 @@ namespace ConnectBot.Infrastructure.Handlers
             },
             {
                 GetSanitizedCommandName(CommandConstants.AllParticipationsCommand), new Participatings.Command()
+            },
+            {
+                GetSanitizedCommandName(CommandConstants.ManualCheckInCommand), new SetManualCheckInMode.Command()
             }
         };
 
@@ -95,14 +98,24 @@ namespace ConnectBot.Infrastructure.Handlers
                 return;
             }
 
-            if (_userCache.IsUserInFeedbackMode(message.From?.Id)) 
+            if (_userCache.IsUserInMode(message.From?.Id, UserState.FeedbackMode)) 
             {
                 if (!_router.ContainsKey(GetSanitizedCommandName(message.Text)))
                 {
                     await _mediator.Send(new CreateFeedback.Command().SetMessage(message));
                     return;
                 }
-                _userCache.SetUserFeedbackMode(message.From?.Id, UserState.None);
+                _userCache.SetUserMode(message.From?.Id, UserState.None);
+            }
+
+            if (_userCache.IsUserInMode(message.From?.Id, UserState.ManualCheckInMode))
+            {
+                if (!_router.ContainsKey(GetSanitizedCommandName(message.Text)))
+                {
+                    await _mediator.Send(new ManualCheckIn.Command().SetMessage(message));
+                    return;
+                }
+                _userCache.SetUserMode(message.From?.Id, UserState.None);
             }
 
             if (_router.TryGetValue(GetSanitizedCommandName(message.Text), out MessageCommand command))

@@ -47,7 +47,8 @@ namespace ConnectBot.Infrastructure.Services
                     },
                     new[]
                     {
-                        new KeyboardButton(CommandConstants.AllParticipationsCommand)
+                        new KeyboardButton(CommandConstants.AllParticipationsCommand),
+                        new KeyboardButton(CommandConstants.ManualCheckInCommand)
                     }
                 });
             }

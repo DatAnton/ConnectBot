@@ -6,7 +6,8 @@ namespace ConnectBot.Application.Cache
     public enum UserState
     {
         None,
-        FeedbackMode
+        FeedbackMode,
+        ManualCheckInMode
     }
 
     public class UserCache
@@ -21,13 +22,13 @@ namespace ConnectBot.Application.Cache
             _userService = userService;
         }
 
-        public bool IsUserInFeedbackMode(long? chatId)
+        public bool IsUserInMode(long? chatId, UserState userState)
         {
-            return chatId.HasValue && _userModes.TryGetValue(chatId.Value, out UserState inFeedBackState) &&
-                   inFeedBackState == UserState.FeedbackMode;
+            return chatId.HasValue && _userModes.TryGetValue(chatId.Value, out UserState inState) &&
+                   inState == userState;
         }
 
-        public void SetUserFeedbackMode(long? chatId, UserState state)
+        public void SetUserMode(long? chatId, UserState state)
         {
             if(chatId.HasValue)
                 _userModes[chatId.Value] = state;

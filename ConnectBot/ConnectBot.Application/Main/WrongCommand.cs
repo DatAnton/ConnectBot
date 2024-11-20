@@ -23,7 +23,7 @@ namespace ConnectBot.Application.Main
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                await _botService.SendMessage(request.Message.Chat.Id, TextConstants.WrongCommandText);
+                await _botService.SendMessage(request.Message.Chat.Id, TextConstants.WrongCommandOrMessageText);
             }
         }
     }
