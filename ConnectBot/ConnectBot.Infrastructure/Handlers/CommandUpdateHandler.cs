@@ -85,9 +85,10 @@ namespace ConnectBot.Infrastructure.Handlers
                 {
                     Message = ex.Message,
                     InnerException = ex.InnerException?.Message,
+                    StackTrace = ex.StackTrace,
                     CreatedAt = DateTime.UtcNow,
                     MessageText = update.Message?.Text,
-                    ChatId = update.Message?.Chat?.Id,
+                    ChatId = update.Message?.Chat.Id,
                 });
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
                 await _botService.SendMessage(update.Message.Chat.Id, TextConstants.ExceptionOccuredText);
