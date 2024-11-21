@@ -21,32 +21,18 @@ namespace ConnectBot.Application.Event
             private readonly IApplicationDbContext _context;
             private readonly UserCache _userCache;
             private readonly EventCache _eventCache;
-            private readonly IUserService _userService;
 
-            public Handler(ITelegramBotService botService, IApplicationDbContext context, UserCache userCache, EventCache eventCache, IUserService userService)
+            public Handler(ITelegramBotService botService, IApplicationDbContext context, UserCache userCache, EventCache eventCache)
             {
                 _botService = botService;
                 _context = context;
                 _userCache = userCache;
                 _eventCache = eventCache;
-                _userService = userService;
             }
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
                 var currentUser = await _userCache.GetUserByChatId(request.Message.Chat.Id, cancellationToken);
-                var testUser =
-                    await _context.Users.FirstOrDefaultAsync(u => u.ChatId == request.Message.Chat.Id,
-                        cancellationToken);
-                var testUser2 = await _userService.GetUserByChatId(request.Message.Chat.Id, cancellationToken);
-                await _context.Logs.AddAsync(new Log()
-                {
-                    ChatId = request.Message.Chat.Id,
-                    Message =
-                        $"{testUser?.Id} - {testUser?.ChatId}, ${request.Message.Chat.Id == testUser?.ChatId}, ${_userCache._users.Count}, {testUser2?.ChatId}",
-                    CreatedAt = DateTime.UtcNow
-                });
-                await _context.SaveChangesAsync(cancellationToken);
                 if (currentUser == null)
                 {
                     throw new Exception("User not found");

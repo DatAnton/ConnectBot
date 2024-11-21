@@ -14,7 +14,7 @@ namespace ConnectBot.Application.Cache
     {
         private readonly IUserService _userService;
         private Dictionary<long, UserState> _userModes = new();
-        public Dictionary<long, User?> _users = new();
+        public Dictionary<long, User> _users = new();
         private List<long> _adminChats = new();
 
         public UserCache(IUserService userService)
@@ -42,14 +42,17 @@ namespace ConnectBot.Application.Cache
 
         public async Task<User?> GetUserByChatId(long chatId, CancellationToken cancellationToken)
         {
-            if (!_users.TryGetValue(chatId, out var existedUser))
+            if (!_users.TryGetValue(chatId, out var cachedUser) && cachedUser != null)
             {
                 var user = await _userService.GetUserByChatId(chatId, cancellationToken);
-                _users[chatId] = user;
+                if (user != null)
+                {
+                    _users[chatId] = user;
+                }
                 return user;
             }
 
-            return existedUser;
+            return cachedUser;
         }
 
         public async Task<List<long>> GetAdminChatIds(CancellationToken cancellationToken)
