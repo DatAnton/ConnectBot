@@ -19,5 +19,6 @@
         public const string LaughingEmoji = "\U0001F606";
         public const string ToolEmoji = "\U0001F6E0";
         public const string PictureEmoji = "\U0001F5BC";
+        public const string SadSmileEmoji = "\U0001F622";
     }
 }

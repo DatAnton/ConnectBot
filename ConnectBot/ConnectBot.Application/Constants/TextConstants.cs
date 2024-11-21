@@ -7,7 +7,7 @@
 
         public const string WelcomeBotText =
             $"Меня зовут Nekko.{EmojiConstants.RobotEmoji}\r\nЯ виртуальный робот молодежной команды.{EmojiConstants.TeamEmoji}\r\n\r\nОчень хочу дружить с тобой {EmojiConstants.WowEmoji} \r\nЗалетай к нам, пользуйся кнопками внизу{EmojiConstants.DownEmoji} и наслаждайся.{EmojiConstants.HeartEmoji}";
-        public const string WrongCommandOrMessageText = $"{EmojiConstants.ExclamationMarkEmoji} Упс! Неправильная команда или сообщение.";
+        public const string WrongCommandOrMessageText = $"{EmojiConstants.ExclamationMarkEmoji} Упс! Неправильная команда или сообщение. Используй кнопки внизу{EmojiConstants.DownEmoji}";
         public const string ExceptionOccuredText = $"{EmojiConstants.ExclamationMarkEmoji} Упс! Произошла ошибка. Обратитесь к организаторам.";
 
         public const string CommunicationRequestResponseText = $"{EmojiConstants.HugsEmoji} Мы приняли твой запрос! Скоро кто-нибудь подойдет тебя обнять. Не убегай! {EmojiConstants.LaughingEmoji}";
@@ -20,7 +20,7 @@
 
         public static string SetManualCheckInModeText = "Добавь учасника вручную. Напиши его имя и фамилию через пробел.";
 
-        public static string NotFoundTodayEventText = "Нет событий сегодня";
+        public static string NotFoundTodayEventText = $"{EmojiConstants.SadSmileEmoji} Нет событий сегодня";
         public static string AlreadyCheckedInText = $"Ты уже зачекинился. Наслаждайся там! {EmojiConstants.WowEmoji}";
         public static Func<string, string, string, string> CheckedInText = (uniqueNumber, teamColor, connectName) => $"Добро пожаловать на {connectName}\r\n\r\n{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\nНаслаждайся там! {EmojiConstants.WowEmoji}";
 
@@ -31,8 +31,8 @@
 
         public const string SocialNetworksText = $"Вот все наши социальные сети. Подписывайся и будь в курсе событий! {EmojiConstants.PhoneEmoji}";
         public const string SocialNetworksInstagramText = $"{EmojiConstants.CameraEmoji} Instagram";
-        public const string SocialNetworksTelegramNewsText = $"{EmojiConstants.NoteEmoji} Sila news";
+        public const string SocialNetworksTelegramNewsText = $"{EmojiConstants.NoteEmoji} Sila Youth News";
         public const string SocialNetworksSiteText = $"{EmojiConstants.GlobeEmoji} Sila web-site";
-        public const string SocialNetworksPhotosChannelText = $"{EmojiConstants.PictureEmoji} Sila church PHOTO";
+        public const string SocialNetworksPhotosChannelText = $"{EmojiConstants.PictureEmoji} Sila Church PHOTO";
     }
 }
