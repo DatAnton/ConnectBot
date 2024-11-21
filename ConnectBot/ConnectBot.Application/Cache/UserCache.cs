@@ -42,7 +42,7 @@ namespace ConnectBot.Application.Cache
 
         public async Task<User?> GetUserByChatId(long chatId, CancellationToken cancellationToken)
         {
-            if (!_users.TryGetValue(chatId, out var cachedUser) && cachedUser != null)
+            if (!_users.TryGetValue(chatId, out var cachedUser))
             {
                 var user = await _userService.GetUserByChatId(chatId, cancellationToken);
                 if (user != null)
