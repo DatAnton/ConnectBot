@@ -17,15 +17,23 @@ namespace ConnectBot.Application.Event
         {
             private readonly ITelegramBotService _botService;
             private readonly UserCache _userCache;
+            private readonly EventCache _eventCache;
 
-            public Handler(ITelegramBotService botService, UserCache userCache)
+            public Handler(ITelegramBotService botService, UserCache userCache, EventCache eventCache)
             {
                 _botService = botService;
                 _userCache = userCache;
+                _eventCache = eventCache;
             }
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
+                var todayEvent = await _eventCache.GetTodayEvent(cancellationToken);
+                if (todayEvent == null)
+                {
+                    await _botService.SendMessage(request.Message.Chat.Id, TextConstants.NotFoundTodayEventText);
+                    return;
+                }
                 _userCache.SetUserMode(request.Message.Chat.Id, UserState.ManualCheckInMode);
                 await _botService.SendMessage(request.Message.Chat.Id, TextConstants.SetManualCheckInModeText);
             }

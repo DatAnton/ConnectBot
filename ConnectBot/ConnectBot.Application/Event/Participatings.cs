@@ -53,7 +53,7 @@ namespace ConnectBot.Application.Event
 
                 var users = await _context.EventParticipations.Include(ep => ep.User)
                     .Where(ep => ep.EventId == todayEvent.Id).OrderBy(ep => ep.UniqueNumber)
-                    .Select(x => $"{x.UniqueNumber}. {x.User.DisplayName} ({x.TeamColor.ColorSymbol})")
+                    .Select(x => $"{x.UniqueNumber}. {x.User.DisplayName} {x.TeamColor.ColorSymbol}")
                     .ToListAsync(cancellationToken);
 
                 var usersText = string.Join("\r\n", users);

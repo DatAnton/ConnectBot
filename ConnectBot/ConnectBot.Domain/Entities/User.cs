@@ -12,6 +12,6 @@
         public IList<CommunicationRequest> CommunicationRequests { get; set; }
         public IList<EventParticipation> EventParticipations { get; set; }
 
-        public string DisplayName => $"{FirstName} {LastName} ({UserName})";
+        public string DisplayName => $"{FirstName} {LastName} (@{UserName})";
     }
 }
