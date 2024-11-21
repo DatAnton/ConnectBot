@@ -17,9 +17,10 @@ namespace ConnectBot.Application.Cache
 
         public async Task<Domain.Entities.Event?> GetTodayEvent(CancellationToken cancellationToken)
         {
-            if (_todayEvent == null || _todayEvent.StartDateTime.Date != DateTime.UtcNow.Date)
+            var startDateTime = DateTime.UtcNow.AddHours(2).Date; // hours for UTC+2
+            if (_todayEvent == null || _todayEvent.StartDateTime.Date != startDateTime)
             {
-                _todayEvent = await _eventService.GetTodayEvent(cancellationToken);
+                _todayEvent = await _eventService.GetTodayEvent(startDateTime, cancellationToken);
                 _eventParticipations = _todayEvent != null
                     ? _todayEvent.EventParticipations.Select(ep => ep.UserId).ToList()
                     : new List<int>();

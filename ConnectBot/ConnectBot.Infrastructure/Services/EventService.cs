@@ -12,11 +12,11 @@ namespace ConnectBot.Infrastructure.Services
         {
             _dbContextFactory = dbContextFactory;
         }
-        public async Task<Event?> GetTodayEvent(CancellationToken cancellationToken)
+        public async Task<Event?> GetTodayEvent(DateTime startDateTime, CancellationToken cancellationToken)
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var todayEvent =
-                await dbContext.Events.Include(e => e.EventParticipations).FirstOrDefaultAsync(e => e.StartDateTime.Date == DateTime.UtcNow.Date,
+                await dbContext.Events.Include(e => e.EventParticipations).FirstOrDefaultAsync(e => e.StartDateTime.Date == startDateTime,
                     cancellationToken);
             return todayEvent;
         }
