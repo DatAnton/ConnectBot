@@ -20,12 +20,15 @@ namespace ConnectBot.Infrastructure.Handlers
         private readonly IMediator _mediator;
         private readonly UserCache _userCache;
         private readonly IApplicationDbContext _dbContext;
+        private readonly ITelegramBotService _botService;
 
-        public CommandUpdateHandler(IMediator mediator, UserCache userCache, IApplicationDbContext dbContext)
+        public CommandUpdateHandler(IMediator mediator, UserCache userCache, IApplicationDbContext dbContext,
+            ITelegramBotService botService)
         {
             _mediator = mediator;
             _userCache = userCache;
             _dbContext = dbContext;
+            _botService = botService;
         }
 
         private const string _emojisPattern =
@@ -87,6 +90,7 @@ namespace ConnectBot.Infrastructure.Handlers
                     ChatId = update.Message?.Chat?.Id,
                 });
                 await _dbContext.SaveChangesAsync(CancellationToken.None);
+                await _botService.SendMessage(update.Message.Chat.Id, TextConstants.ExceptionOccuredText);
             }
         }
 
