@@ -55,9 +55,9 @@ namespace ConnectBot.Application.Event
 
                 await _botService.SendMessage(request.Message.Chat.Id, TextConstants.FeedbackResponseText);
 
-                foreach (var adminChat in await _userCache.GetAdminChatIds(cancellationToken))
+                foreach (var adminChat in await _userCache.GetAdmins(cancellationToken))
                 {
-                    await _botService.SendMessage(adminChat, TextConstants.NewFeedbackHandlerText(currentUser.DisplayName, entity.Text));
+                    await _botService.SendMessage(adminChat.Value, TextConstants.NewFeedbackHandlerText(currentUser.DisplayName, entity.Text));
                 }
             }
         }

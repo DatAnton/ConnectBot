@@ -64,9 +64,12 @@ namespace ConnectBot.Application.Event
 
                 await _botService.SendMessage(request.Message.Chat.Id, TextConstants.CommunicationRequestResponseText);
 
-                foreach (var adminChat in await _userCache.GetAdminChatIds(cancellationToken))
+                foreach (var adminChat in await _userCache.GetAdmins(cancellationToken))
                 {
-                    await _botService.SendMessage(adminChat, TextConstants.CommunicationRequestHandlerText(currentUser.DisplayName));
+                    if (_eventCache.IsOnEvent(adminChat.Key))
+                    {
+                        await _botService.SendMessage(adminChat.Value, TextConstants.CommunicationRequestHandlerText(currentUser.DisplayName));
+                    }
                 }
             }
         }

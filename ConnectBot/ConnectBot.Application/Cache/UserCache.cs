@@ -15,7 +15,7 @@ namespace ConnectBot.Application.Cache
         private readonly IUserService _userService;
         private Dictionary<long, UserState> _userModes = new();
         public Dictionary<long, User> _users = new();
-        private List<long> _adminChats = new();
+        private Dictionary<int, long> _admins = new();
 
         public UserCache(IUserService userService)
         {
@@ -53,14 +53,14 @@ namespace ConnectBot.Application.Cache
 
         }
 
-        public async Task<List<long>> GetAdminChatIds(CancellationToken cancellationToken)
+        public async Task<Dictionary<int, long>> GetAdmins(CancellationToken cancellationToken)
         {
-            if (_adminChats.Count == 0)
+            if (_admins.Count == 0)
             {
-                _adminChats = (await _userService.GetUserAdmins(cancellationToken)).Select(u => u.ChatId).ToList();
+                _admins = (await _userService.GetUserAdmins(cancellationToken)).ToDictionary(k => k.Id, x => x.ChatId);
             }
 
-            return _adminChats;
+            return _admins;
         }
 
         public async Task<bool> IsAdminChat(long? chatId)
@@ -68,12 +68,12 @@ namespace ConnectBot.Application.Cache
             if (!chatId.HasValue)
                 return false;
 
-            if (_adminChats.Count == 0)
+            if (_admins.Count == 0)
             {
-                await GetAdminChatIds(CancellationToken.None);
+                await GetAdmins(CancellationToken.None);
             }
 
-            return _adminChats.Contains(chatId.Value);
+            return _admins.ContainsValue(chatId.Value);
         }
     }
 }
