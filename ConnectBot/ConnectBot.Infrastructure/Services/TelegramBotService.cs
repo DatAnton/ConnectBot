@@ -49,6 +49,10 @@ namespace ConnectBot.Infrastructure.Services
                     {
                         new KeyboardButton(CommandConstants.AllParticipationsCommand),
                         new KeyboardButton(CommandConstants.ManualCheckInCommand)
+                    },
+                    new[]
+                    {
+                        new KeyboardButton(CommandConstants.DonateYouthTeamCommand)
                     }
                 });
             }
@@ -65,6 +69,10 @@ namespace ConnectBot.Infrastructure.Services
                     {
                         new KeyboardButton(CommandConstants.FeedbackCommand),
                         new KeyboardButton(CommandConstants.SocialNetworksCommand)
+                    },
+                    new[]
+                    {
+                        new KeyboardButton(CommandConstants.DonateYouthTeamCommand)
                     }
                 });
             }

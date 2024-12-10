@@ -61,6 +61,9 @@ namespace ConnectBot.Infrastructure.Handlers
             },
             {
                 GetSanitizedCommandName(CommandConstants.ManualCheckInCommand), new SetManualCheckInMode.Command()
+            },
+            {
+                GetSanitizedCommandName(CommandConstants.DonateYouthTeamCommand), new DonateToYouthTeam.Command()
             }
         };
 

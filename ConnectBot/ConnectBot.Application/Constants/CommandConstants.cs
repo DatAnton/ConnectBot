@@ -9,5 +9,6 @@
         public const string FeedbackCommand = $"{EmojiConstants.NoteEmoji} Связаться с командой";
         public const string AllParticipationsCommand = $"{EmojiConstants.ToolEmoji} Все учасники";
         public const string ManualCheckInCommand = $"{EmojiConstants.ToolEmoji}{EmojiConstants.HelloEmoji} Ручной чек-ин";
+        public const string DonateYouthTeamCommand = $"{EmojiConstants.HeartEmoji} Проспонсировать молодежную команду";
     }
 }
