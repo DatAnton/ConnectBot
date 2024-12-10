@@ -36,6 +36,6 @@
         public const string SocialNetworksPhotosChannelText = $"{EmojiConstants.PictureEmoji} Sila Church PHOTO";
 
         public const string DonateToYouthTeamText =
-            $"Спасибо, что решил пожертвовать молодежной команде.{EmojiConstants.HugsEmoji}{EmojiConstants.WowEmoji}\r\nЭто можно сделать платежом на банковские реквизиты церкви с отметкой <b>Youth</b>.\r\nМы любим тебя!{EmojiConstants.HeartEmoji}\r\n\r\nПолучатель: SILA CHURCH\r\nНомер счета:\u00a0FI6571401420046462\r\nViitenumero: 1818\r\nMessage: Youth";
+            $"Спасибо, что решил пожертвовать молодежной команде.{EmojiConstants.WowEmoji}{EmojiConstants.HugsEmoji}\r\nЭто можно сделать платежом на банковские реквизиты церкви с отметкой <b>Youth</b>.\r\nМы любим тебя!{EmojiConstants.RedHeartEmoji}\r\n\r\nПолучатель: SILA CHURCH\r\nНомер счета:\u00a0FI6571401420046462\r\nViitenumero: 1818\r\nMessage: Youth";
     }
 }

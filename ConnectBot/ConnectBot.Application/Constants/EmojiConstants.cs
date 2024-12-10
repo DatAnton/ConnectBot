@@ -7,6 +7,7 @@
         public const string RobotEmoji = "\U0001F916";
         public const string TeamEmoji = "\U0001F465";
         public const string HeartEmoji = "\U0001F499";
+        public const string RedHeartEmoji = "\U00002764";
         public const string ExclamationMarkEmoji = "\U00002757";
         public const string WowEmoji = "\U0001F929";
         public const string DownEmoji = "\U00002B07";
