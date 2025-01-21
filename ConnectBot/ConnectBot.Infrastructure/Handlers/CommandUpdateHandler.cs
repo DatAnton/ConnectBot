@@ -64,6 +64,9 @@ namespace ConnectBot.Infrastructure.Handlers
             },
             {
                 GetSanitizedCommandName(CommandConstants.DonateYouthTeamCommand), new DonateToYouthTeam.Command()
+            },
+            {
+                GetSanitizedCommandName(CommandConstants.IceBreakerCommand), new IceBreaker.Command()
             }
         };
 

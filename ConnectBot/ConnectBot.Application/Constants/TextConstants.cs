@@ -21,6 +21,9 @@
         public static string SetManualCheckInModeText = "Добавь учасника вручную. Напиши его имя и фамилию через пробел.";
 
         public static string NotFoundTodayEventText = $"{EmojiConstants.SadSmileEmoji} Нет событий сегодня";
+        public static string IceBreakerAlreadyGeneratedText = $"{EmojiConstants.DoneEmoji} Ice Breaker уже сгенерирован";
+        public static string IceBreakerGeneratedSuccessfullyText = $"{EmojiConstants.DoneEmoji} Ice Breaker сгенерирован успешно!";
+        public static string CheckInRequiredForIceBreakerText = $"{EmojiConstants.ExclamationMarkEmoji} Для Ice Breaker генерации ты должен зачекиниться!";
         public static string AlreadyCheckedInText = $"Ты уже зачекинился. Наслаждайся там! {EmojiConstants.WowEmoji}";
         public static Func<string, string, string, string> CheckedInText = (uniqueNumber, teamColor, connectName) => $"Добро пожаловать на {connectName}\r\n\r\n{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\nНаслаждайся там! {EmojiConstants.WowEmoji}";
 
@@ -36,6 +39,9 @@
         public const string SocialNetworksPhotosChannelText = $"{EmojiConstants.PictureEmoji} Sila Church PHOTO";
 
         public const string DonateToYouthTeamText =
-            $"Спасибо, что решил пожертвовать молодежной команде.{EmojiConstants.WowEmoji}{EmojiConstants.HugsEmoji}\r\nЭто можно сделать платежом на банковские реквизиты церкви с отметкой <b>Youth</b>.\r\nМы любим тебя!{EmojiConstants.RedHeartEmoji}\r\n\r\nПолучатель: SILA CHURCH\r\nНомер счета:\u00a0FI6571401420046462\r\nViitenumero: 1818\r\nMessage: Youth";
+            $"Спасибо, что решил пожертвовать молодежной команде.{EmojiConstants.WowEmoji}{EmojiConstants.HugsEmoji}\r\nЭто можно сделать платежом на банковские реквизиты церкви с отметкой <b>Youth</b>.\r\nМы любим тебя!{EmojiConstants.RedHeartEmoji}\r\n\r\nПолучатель: SILA CHURCH\r\nНомер счета: FI6571401420046462\r\nMessage: Youth";
+
+        public static Func<string, string> IceBreakerMessageText = partner => $"{EmojiConstants.IceEmoji}{EmojiConstants.RedCrossEmoji} It's Ice breaker time!\r\n\r\nПора разломать лед между нами и стать ближе.\r\nТвой собеседник сегодня - {partner}\r\n Найди его и вперед общаться{EmojiConstants.TeamEmoji}";
+        public static Func<string, string, string> IceBreakerListText = (eventName, usersList) => $"Ice breaker {eventName}: \r\n\r\n{usersList}";
     }
 }

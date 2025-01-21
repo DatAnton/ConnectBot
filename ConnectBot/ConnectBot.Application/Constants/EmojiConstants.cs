@@ -21,5 +21,7 @@
         public const string ToolEmoji = "\U0001F6E0";
         public const string PictureEmoji = "\U0001F5BC";
         public const string SadSmileEmoji = "\U0001F622";
+        public const string IceEmoji = "\U0001F9CA";
+        public const string RedCrossEmoji = "\U0000274C";
     }
 }

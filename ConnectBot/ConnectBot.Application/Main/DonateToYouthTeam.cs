@@ -3,7 +3,7 @@ using ConnectBot.Application.Models;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
 
-namespace ConnectBot.Application.Event
+namespace ConnectBot.Application.Main
 {
     public class DonateToYouthTeam
     {

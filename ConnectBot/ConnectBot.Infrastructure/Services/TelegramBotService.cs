@@ -52,7 +52,8 @@ namespace ConnectBot.Infrastructure.Services
                     },
                     new[]
                     {
-                        new KeyboardButton(CommandConstants.DonateYouthTeamCommand)
+                        new KeyboardButton(CommandConstants.DonateYouthTeamCommand),
+                        new KeyboardButton(CommandConstants.IceBreakerCommand),
                     }
                 });
             }
