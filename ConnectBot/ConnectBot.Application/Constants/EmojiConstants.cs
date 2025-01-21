@@ -23,5 +23,7 @@
         public const string SadSmileEmoji = "\U0001F622";
         public const string IceEmoji = "\U0001F9CA";
         public const string RedCrossEmoji = "\U0000274C";
+        public const string DropEmoji = "\U0001F4A7";
+        public const string RightEmoji = "\U000027A1";
     }
 }

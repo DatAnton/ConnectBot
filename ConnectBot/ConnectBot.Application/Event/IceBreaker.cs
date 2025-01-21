@@ -56,8 +56,7 @@ namespace ConnectBot.Application.Event
                     return;
                 }
 
-                var dateTimeNow = DateTime.UtcNow.AddHours(2); // hours for UTC+2
-                if (dateTimeNow < todayEvent.StartDateTime)
+                if (DateTime.UtcNow < todayEvent.StartDateTime)
                 {
                     await _botService.SendMessage(request.Message.Chat.Id, TextConstants.WrongCommandOrMessageText);
                     return;
