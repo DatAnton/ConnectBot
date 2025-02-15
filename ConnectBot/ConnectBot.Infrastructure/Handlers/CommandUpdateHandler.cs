@@ -76,9 +76,9 @@ namespace ConnectBot.Infrastructure.Handlers
             //ToDo: Add error handler
             try
             {
-                await _botService.SetClientLoading(update.Message.Chat.Id);
                 if (update.Message != null)
                 {
+                    await _botService.SetClientLoading(update.Message.Chat.Id);
                     await HandleMessage(update.Message);
                 }
                 else if (update.CallbackQuery != null)
