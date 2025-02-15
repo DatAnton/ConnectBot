@@ -54,7 +54,6 @@ namespace ConnectBot.Infrastructure.Services
                     {
                         new KeyboardButton(CommandConstants.AllParticipationsCommand),
                         new KeyboardButton(CommandConstants.AllParticipationsNumbersCommand),
-                        new KeyboardButton(CommandConstants.ManualCheckInCommand)
                     },
                     new[]
                     {

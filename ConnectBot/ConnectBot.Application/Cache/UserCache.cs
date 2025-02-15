@@ -6,8 +6,7 @@ namespace ConnectBot.Application.Cache
     public enum UserState
     {
         None,
-        FeedbackMode,
-        ManualCheckInMode
+        FeedbackMode
     }
 
     public class UserCache

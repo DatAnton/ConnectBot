@@ -60,9 +60,6 @@ namespace ConnectBot.Infrastructure.Handlers
                 GetSanitizedCommandName(CommandConstants.AllParticipationsCommand), new Participatings.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.ManualCheckInCommand), new SetManualCheckInMode.Command()
-            },
-            {
                 GetSanitizedCommandName(CommandConstants.DonateYouthTeamCommand), new DonateToYouthTeam.Command()
             },
             {
@@ -120,10 +117,6 @@ namespace ConnectBot.Infrastructure.Handlers
                     if (_userCache.IsUserInMode(message.From?.Id, UserState.FeedbackMode))
                     {
                         await _mediator.Send(new CreateFeedback.Command().SetMessage(message));
-                    }
-                    if (_userCache.IsUserInMode(message.From?.Id, UserState.ManualCheckInMode))
-                    {
-                        await _mediator.Send(new ManualCheckIn.Command().SetMessage(message));
                     }
                     _userCache.SetUserMode(message.From?.Id, UserState.None);
                     return;
