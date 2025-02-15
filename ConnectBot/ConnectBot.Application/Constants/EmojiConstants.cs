@@ -19,6 +19,7 @@
         public const string PhoneEmoji = "\U0001F4F1";
         public const string LaughingEmoji = "\U0001F606";
         public const string ToolEmoji = "\U0001F6E0";
+        public const string NumbersEmoji = "\U0001F522";
         public const string PictureEmoji = "\U0001F5BC";
         public const string SadSmileEmoji = "\U0001F622";
         public const string IceEmoji = "\U0001F9CA";

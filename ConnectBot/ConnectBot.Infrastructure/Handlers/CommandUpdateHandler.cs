@@ -67,6 +67,9 @@ namespace ConnectBot.Infrastructure.Handlers
             },
             {
                 GetSanitizedCommandName(CommandConstants.IceBreakerCommand), new IceBreaker.Command()
+            },
+            {
+                GetSanitizedCommandName(CommandConstants.AllParticipationsNumbersCommand), new ParticipatingsNumber.Command()
             }
         };
 
