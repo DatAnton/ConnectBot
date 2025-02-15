@@ -24,6 +24,11 @@ namespace ConnectBot.Infrastructure.Services
             await _botClient.SendTextMessageAsync(chatId, text, replyMarkup: replyMarkup, parseMode: ParseMode.Html);
         }
 
+        public async Task SetClientLoading(ChatId chatId)
+        {
+            await _botClient.SendChatActionAsync(chatId, ChatAction.Typing);
+        }
+
         public async Task SendMessage(ChatId chatId, string text)
         {
             await SendMessage(chatId, text, await GetReplyKeyboardMarkup(chatId));
@@ -48,6 +53,7 @@ namespace ConnectBot.Infrastructure.Services
                     new[]
                     {
                         new KeyboardButton(CommandConstants.AllParticipationsCommand),
+                        new KeyboardButton(CommandConstants.AllParticipationsNumbersCommand),
                         new KeyboardButton(CommandConstants.ManualCheckInCommand)
                     },
                     new[]
