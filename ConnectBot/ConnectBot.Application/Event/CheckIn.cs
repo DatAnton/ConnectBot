@@ -4,7 +4,6 @@ using ConnectBot.Application.Models;
 using ConnectBot.Domain.Entities;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ConnectBot.Application.Event
 {
@@ -50,13 +49,19 @@ namespace ConnectBot.Application.Event
                     await _botService.SendMessage(request.Message.Chat.Id, TextConstants.AlreadyCheckedInText);
                     return;
                 }
+                object locker = new();
+                int uniqueNumber, teamColorId;
 
-                var uniqueNumber = _eventCache.GetCurrentParticipationsCount + 1;
-
-                var teamColorId = uniqueNumber % todayEvent.NumberOfTeams;
-                if (teamColorId == 0)
+                lock (locker)
                 {
-                    teamColorId = todayEvent.NumberOfTeams;
+                    uniqueNumber = _eventCache.GetCurrentParticipationsCount + 1;
+
+                    teamColorId = uniqueNumber % todayEvent.NumberOfTeams;
+                    if (teamColorId == 0)
+                    {
+                        teamColorId = todayEvent.NumberOfTeams;
+                    }
+                    _eventCache.AddParticipation(currentUser.Id);
                 }
 
                 var entity = new EventParticipation
@@ -69,7 +74,7 @@ namespace ConnectBot.Application.Event
                 };
                 await _context.EventParticipations.AddAsync(entity, cancellationToken);
                 await _context.SaveChangesAsync(cancellationToken);
-                _eventCache.AddParticipation(currentUser.Id);
+                
 
                 var teamColor = await _eventCache.GetTeamColorById(teamColorId, cancellationToken);
 
