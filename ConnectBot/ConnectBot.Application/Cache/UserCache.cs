@@ -15,6 +15,7 @@ namespace ConnectBot.Application.Cache
         private Dictionary<long, UserState> _userModes = new();
         public Dictionary<long, User> _users = new();
         private Dictionary<int, long> _admins = new();
+        private Dictionary<long, bool> _userAdminPanels = new();
 
         public UserCache(IUserService userService)
         {
@@ -62,17 +63,20 @@ namespace ConnectBot.Application.Cache
             return _admins;
         }
 
-        public async Task<bool> IsAdminChat(long? chatId)
+        public bool IsAdminPanel(long? chatId)
         {
-            if (!chatId.HasValue)
+            if (!chatId.HasValue || !_userAdminPanels.TryGetValue(chatId.Value, out var isAdminPanelEnabled))
                 return false;
 
-            if (_admins.Count == 0)
-            {
-                await GetAdmins(CancellationToken.None);
-            }
+            return isAdminPanelEnabled;
+        }
 
-            return _admins.ContainsValue(chatId.Value);
+        public void SetAdminPanel(long? chatId, bool adminPanel)
+        {
+            if (chatId.HasValue)
+            {
+                _userAdminPanels[chatId.Value] = adminPanel;
+            }
         }
     }
 }

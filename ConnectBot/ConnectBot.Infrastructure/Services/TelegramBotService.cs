@@ -24,6 +24,24 @@ namespace ConnectBot.Infrastructure.Services
             await _botClient.SendTextMessageAsync(chatId, text, replyMarkup: replyMarkup, parseMode: ParseMode.Html);
         }
 
+        public async Task SetUserMenu(List<long> chatIds)
+        {
+            var commands = new[]
+            {
+                new BotCommand { Command = CommandConstants.AdminPanelCommand, Description = TextConstants.AdminPanelCommand },
+                new BotCommand { Command = CommandConstants.UserPanelCommand, Description = TextConstants.UserPanelCommand },
+            };
+
+            await _botClient.SetMyCommandsAsync(commands);
+
+            var menuButton = new MenuButtonCommands();
+
+            foreach (var chatId in chatIds)
+            {
+                await _botClient.SetChatMenuButtonAsync(chatId, menuButton);
+            }
+        }
+
         public async Task SetClientLoading(ChatId chatId)
         {
             await _botClient.SendChatActionAsync(chatId, ChatAction.Typing);
@@ -31,57 +49,51 @@ namespace ConnectBot.Infrastructure.Services
 
         public async Task SendMessage(ChatId chatId, string text)
         {
-            await SendMessage(chatId, text, await GetReplyKeyboardMarkup(chatId));
+            var keyboard = _userCache.IsAdminPanel(chatId.Identifier)
+                ? GetAdminReplyKeyboardMarkup()
+                : GetUserReplyKeyboardMarkup();
+
+            await SendMessage(chatId, text, keyboard);
         }
 
-        private async Task<ReplyKeyboardMarkup> GetReplyKeyboardMarkup(ChatId chatId)
+        private ReplyKeyboardMarkup GetAdminReplyKeyboardMarkup()
         {
-            if (await _userCache.IsAdminChat(chatId.Identifier))
+            return new ReplyKeyboardMarkup(new[]
             {
-                return new ReplyKeyboardMarkup(new[]
+                new[]
                 {
-                    new[]
-                    {
-                        new KeyboardButton(CommandConstants.CheckInCommand),
-                        new KeyboardButton(CommandConstants.CommunicationRequestCommand)
-                    },
-                    new[]
-                    {
-                        new KeyboardButton(CommandConstants.FeedbackCommand),
-                        new KeyboardButton(CommandConstants.SocialNetworksCommand)
-                    },
-                    new[]
-                    {
-                        new KeyboardButton(CommandConstants.AllParticipationsCommand),
-                        new KeyboardButton(CommandConstants.AllParticipationsNumbersCommand),
-                    },
-                    new[]
-                    {
-                        new KeyboardButton(CommandConstants.DonateYouthTeamCommand),
-                        new KeyboardButton(CommandConstants.IceBreakerCommand),
-                    }
-                });
-            }
-            else
+                    new KeyboardButton(CommandConstants.AllParticipationsCommand)
+                },
+                new[]
+                {
+                    new KeyboardButton(CommandConstants.AllParticipationsNumbersCommand),
+                },
+                new[]
+                {
+                    new KeyboardButton(CommandConstants.IceBreakerCommand),
+                }
+            });
+        }
+
+        private ReplyKeyboardMarkup GetUserReplyKeyboardMarkup()
+        {
+            return new ReplyKeyboardMarkup(new[]
             {
-                return new ReplyKeyboardMarkup(new[]
+                new[]
                 {
-                    new[]
-                    {
-                        new KeyboardButton(CommandConstants.CheckInCommand),
-                        new KeyboardButton(CommandConstants.CommunicationRequestCommand)
-                    },
-                    new[]
-                    {
-                        new KeyboardButton(CommandConstants.FeedbackCommand),
-                        new KeyboardButton(CommandConstants.SocialNetworksCommand)
-                    },
-                    new[]
-                    {
-                        new KeyboardButton(CommandConstants.DonateYouthTeamCommand)
-                    }
-                });
-            }
+                    new KeyboardButton(CommandConstants.CheckInCommand),
+                    new KeyboardButton(CommandConstants.CommunicationRequestCommand)
+                },
+                new[]
+                {
+                    new KeyboardButton(CommandConstants.FeedbackCommand),
+                    new KeyboardButton(CommandConstants.SocialNetworksCommand)
+                },
+                new[]
+                {
+                    new KeyboardButton(CommandConstants.DonateYouthTeamCommand)
+                }
+            });
         }
     }
 }

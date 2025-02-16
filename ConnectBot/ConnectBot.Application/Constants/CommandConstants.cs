@@ -11,5 +11,8 @@
         public const string AllParticipationsNumbersCommand = $"{EmojiConstants.ToolEmoji}{EmojiConstants.NumbersEmoji} Все учасники(номера)";
         public const string DonateYouthTeamCommand = $"{EmojiConstants.RedHeartEmoji} Пожертвовать на развитие";
         public const string IceBreakerCommand = $"{EmojiConstants.IceEmoji}{EmojiConstants.RedCrossEmoji} Ice Breaker";
+
+        public const string AdminPanelCommand = "/admin_panel";
+        public const string UserPanelCommand = "/user_panel";
     }
 }

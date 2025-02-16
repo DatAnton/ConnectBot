@@ -2,13 +2,13 @@ using ConnectBot.Application.Cache;
 using ConnectBot.Application.Main;
 using ConnectBot.Domain.Interfaces;
 using ConnectBot.Extensions;
+using ConnectBot.Infrastructure.Factories;
 using ConnectBot.Infrastructure.Handlers;
 using ConnectBot.Infrastructure.Services;
 using ConnectBot.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 using System.Text.RegularExpressions;
-using ConnectBot.Infrastructure.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +62,8 @@ var app = builder.Build();
 
 app.MigrateDatabase<ApplicationDbContext>();
 
+await IntializeBotCommands(app);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -75,3 +77,13 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static async Task IntializeBotCommands(IHost webHost)
+{
+    using var scope = webHost.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    var userService = services.GetRequiredService<IUserService>();
+    var botService = services.GetRequiredService<ITelegramBotService>();
+    var admins = await userService.GetUserAdmins(CancellationToken.None);
+    await botService.SetUserMenu(admins.Select(x => x.ChatId).ToList());
+}

@@ -2,12 +2,12 @@
 using ConnectBot.Application.Constants;
 using ConnectBot.Application.Event;
 using ConnectBot.Application.Main;
+using ConnectBot.Application.Menu;
 using ConnectBot.Application.Models;
 using ConnectBot.Application.Users;
+using ConnectBot.Domain.Entities;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
-using System.Text.RegularExpressions;
-using ConnectBot.Domain.Entities;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using CommunicationRequest = ConnectBot.Application.Event.CommunicationRequest;
@@ -31,42 +31,40 @@ namespace ConnectBot.Infrastructure.Handlers
             _botService = botService;
         }
 
-        private const string _emojisPattern =
-            @"[\u1F600-\u1F64F\u1F300-\u1F5FF\u1F680-\u1F6FF\u1F700-\u1F77F\u1F780-\u1F7FF\u1F800-\u1F8FF\u1F900-\u1F9FF\u1FA00-\u1FA6F\u1FA70-\u1FAFF\u2600-\u26FF\u2700-\u27BF\u2300-\u23FF\u2B50\u1F4AC]";
-
-        private static string GetSanitizedCommandName(string path)
-        {
-            return Regex.Replace(path, _emojisPattern, "").ToLower();
-        }
-
         private readonly Dictionary<string, MessageCommand> _router = new()
         {
             {
-                GetSanitizedCommandName(CommandConstants.StartCommand), new Start.Command()
+                CommandConstants.StartCommand, new Start.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.SocialNetworksCommand), new SocialNetworks.Command()
+                CommandConstants.SocialNetworksCommand, new SocialNetworks.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.CommunicationRequestCommand), new CommunicationRequest.Command()
+                CommandConstants.CommunicationRequestCommand, new CommunicationRequest.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.FeedbackCommand), new Feedback.Command()
+                CommandConstants.FeedbackCommand, new Feedback.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.CheckInCommand), new CheckIn.Command()
+                CommandConstants.CheckInCommand, new CheckIn.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.AllParticipationsCommand), new Participatings.Command()
+                CommandConstants.AllParticipationsCommand, new Participatings.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.DonateYouthTeamCommand), new DonateToYouthTeam.Command()
+                CommandConstants.DonateYouthTeamCommand, new DonateToYouthTeam.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.IceBreakerCommand), new IceBreaker.Command()
+                CommandConstants.IceBreakerCommand, new IceBreaker.Command()
             },
             {
-                GetSanitizedCommandName(CommandConstants.AllParticipationsNumbersCommand), new ParticipatingsNumber.Command()
+                CommandConstants.AllParticipationsNumbersCommand, new ParticipatingsNumber.Command()
+            },
+            {
+                CommandConstants.AdminPanelCommand, new AdminPanel.Command()
+            },
+            {
+                CommandConstants.UserPanelCommand, new UserPanel.Command()
             }
         };
 
@@ -112,7 +110,7 @@ namespace ConnectBot.Infrastructure.Handlers
 
             if (_userCache.IsUserInTypeMode(message.From?.Id))
             {
-                if (!_router.ContainsKey(GetSanitizedCommandName(message.Text)))
+                if (!_router.ContainsKey(message.Text))
                 {
                     if (_userCache.IsUserInMode(message.From?.Id, UserState.FeedbackMode))
                     {
@@ -124,7 +122,7 @@ namespace ConnectBot.Infrastructure.Handlers
                 _userCache.SetUserMode(message.From?.Id, UserState.None);
             }
 
-            if (_router.TryGetValue(GetSanitizedCommandName(message.Text), out MessageCommand command))
+            if (_router.TryGetValue(message.Text, out MessageCommand command))
             {
                 await _mediator.Send(command.SetMessage(message));
             }

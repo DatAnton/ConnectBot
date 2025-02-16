@@ -18,7 +18,8 @@
         public static string FeedbackResponseText = $"Большое спасибо, что связался с нами. Твое мнение ценно для нас {EmojiConstants.HeartEmoji}";
         public static Func<string, string, string> NewFeedbackHandlerText = (author, text) => $"{EmojiConstants.ExclamationMarkEmoji} Новый фидбек от {author}: \r\n{text}";
 
-        public static string SetManualCheckInModeText = "Добавь учасника вручную. Напиши его имя и фамилию через пробел.";
+        public static string AdminPanelCommand = $"{EmojiConstants.ToolEmoji} Админ панель";
+        public static string UserPanelCommand = $"{EmojiConstants.TeamEmoji} Пользовательская панель";
 
         public static string NotFoundTodayEventText = $"{EmojiConstants.SadSmileEmoji} Нет событий сегодня";
         public static string IceBreakerAlreadyGeneratedText = $"{EmojiConstants.DoneEmoji} Ice Breaker уже сгенерирован";
