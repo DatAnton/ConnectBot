@@ -82,8 +82,6 @@ static async Task IntializeBotCommands(IHost webHost)
 {
     using var scope = webHost.Services.CreateScope();
     var services = scope.ServiceProvider;
-    var userService = services.GetRequiredService<IUserService>();
     var botService = services.GetRequiredService<ITelegramBotService>();
-    var admins = await userService.GetUserAdmins(CancellationToken.None);
-    await botService.SetUserMenu(admins.Select(x => x.ChatId).ToList());
+    await botService.SetUserMenu();
 }

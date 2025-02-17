@@ -8,6 +8,6 @@ namespace ConnectBot.Domain.Interfaces
         Task SendMessage(ChatId chatId, string text, IReplyMarkup? replyMarkup);
         Task SendMessage(ChatId chatId, string text);
         Task SetClientLoading(ChatId chatId);
-        Task SetUserMenu(List<long> chatIds);
+        Task SetUserMenu();
     }
 }
