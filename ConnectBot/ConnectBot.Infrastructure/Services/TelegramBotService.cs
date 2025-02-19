@@ -33,38 +33,28 @@ namespace ConnectBot.Infrastructure.Services
 
         public async Task SetUserMenu()
         {
-            //await _botClient.DeleteMyCommandsAsync();
-            //var menuButton = new MenuButtonDefault();
-            //await _botClient.SetChatMenuButtonAsync(menuButton: menuButton);
+            //clear for all users
+            await _botClient.DeleteMyCommandsAsync(new BotCommandScopeDefault());
+            await _botClient.SetChatMenuButtonAsync(menuButton: new MenuButtonDefault());
 
-            //var commands = new[]
-            //{
-            //    new BotCommand { Command = CommandConstants.AdminPanelCommand, Description = TextConstants.AdminPanelCommand },
-            //    new BotCommand { Command = CommandConstants.UserPanelCommand, Description = TextConstants.UserPanelCommand }
-            //};
+            //reassign for admins
+            var menuButton = new MenuButtonCommands();
 
-            ////clear for all users
-            //var users = await _applicationDbContext.Users.Where(u => !u.IsAdmin).ToListAsync(CancellationToken.None);
+            var commands = new[]
+            {
+                new BotCommand { Command = CommandConstants.AdminPanelCommand, Description = TextConstants.AdminPanelCommand },
+                new BotCommand { Command = CommandConstants.UserPanelCommand, Description = TextConstants.UserPanelCommand }
+            };
 
-            //foreach (var user in users)
-            //{
-            //    await _botClient.DeleteMyCommandsAsync(new BotCommandScopeChat
-            //    {
-            //        ChatId = user.ChatId
-            //    });
-            //}
-
-            ////reassign for admins
-            //var admins = await _userService.GetUserAdmins(CancellationToken.None);
-            //foreach (var admin in admins)
-            //{
-            //    await _botClient.SetMyCommandsAsync(commands, new BotCommandScopeChat
-            //    {
-            //        ChatId = admin.ChatId
-            //    });
-            //    var menuButton = new MenuButtonDefault();
-            //    await _botClient.SetChatMenuButtonAsync(admin.ChatId, menuButton);
-            //}
+            var admins = await _userService.GetUserAdmins(CancellationToken.None);
+            foreach (var admin in admins)
+            {
+                await _botClient.SetMyCommandsAsync(commands, new BotCommandScopeChat
+                {
+                    ChatId = admin.ChatId
+                });
+                await _botClient.SetChatMenuButtonAsync(admin.ChatId, menuButton);
+            }
         }
 
         public async Task SetClientLoading(ChatId chatId)
