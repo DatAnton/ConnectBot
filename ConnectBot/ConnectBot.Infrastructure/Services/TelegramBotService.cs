@@ -33,9 +33,9 @@ namespace ConnectBot.Infrastructure.Services
 
         public async Task SetUserMenu()
         {
-            await _botClient.DeleteMyCommandsAsync();
-            var menuButton = new MenuButtonDefault();
-            await _botClient.SetChatMenuButtonAsync(menuButton: menuButton);
+            //await _botClient.DeleteMyCommandsAsync();
+            //var menuButton = new MenuButtonDefault();
+            //await _botClient.SetChatMenuButtonAsync(menuButton: menuButton);
 
             //var commands = new[]
             //{
