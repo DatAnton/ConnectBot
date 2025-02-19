@@ -1,5 +1,6 @@
 ﻿using ConnectBot.Application.Cache;
 using ConnectBot.Application.Constants;
+using ConnectBot.Domain.Entities;
 using ConnectBot.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Telegram.Bot;
@@ -47,7 +48,17 @@ namespace ConnectBot.Infrastructure.Services
                 {
                     ChatId = user.ChatId
                 });
+                var menuButton = new MenuButtonDefault();
+                await _botClient.SetChatMenuButtonAsync(user.ChatId, menuButton);
+                await _applicationDbContext.Logs.AddAsync(new Log()
+                {
+                    ChatId = user.ChatId,
+                    MessageText = $"Deleted for {user.ChatId}",
+                    Message = $"{user.Id}",
+                    CreatedAt = DateTime.UtcNow
+                }, CancellationToken.None);
             }
+            await _applicationDbContext.SaveChangesAsync(CancellationToken.None);
 
             //reassign for admins
             var admins = await _userService.GetUserAdmins(CancellationToken.None);
@@ -59,7 +70,15 @@ namespace ConnectBot.Infrastructure.Services
                 });
                 var menuButton = new MenuButtonCommands();
                 await _botClient.SetChatMenuButtonAsync(admin.ChatId, menuButton);
+                await _applicationDbContext.Logs.AddAsync(new Log()
+                {
+                    ChatId = admin.ChatId,
+                    MessageText = $"Admin set for {admin.ChatId}",
+                    Message = $"{admin.Id}",
+                    CreatedAt = DateTime.UtcNow
+                }, CancellationToken.None);
             }
+            await _applicationDbContext.SaveChangesAsync(CancellationToken.None);
         }
 
         public async Task SetClientLoading(ChatId chatId)
