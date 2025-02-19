@@ -47,6 +47,8 @@ namespace ConnectBot.Infrastructure.Services
                 {
                     ChatId = user.ChatId
                 });
+                var menuButton = new MenuButtonDefault();
+                await _botClient.SetChatMenuButtonAsync(user.ChatId, menuButton);
             }
 
             //reassign for admins
