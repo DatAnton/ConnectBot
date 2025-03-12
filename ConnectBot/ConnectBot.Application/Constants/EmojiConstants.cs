@@ -26,5 +26,7 @@
         public const string RedCrossEmoji = "\U0000274C";
         public const string DropEmoji = "\U0001F4A7";
         public const string RightEmoji = "\U000027A1";
+        public const string QuestionMarkEmoji = "\U00002753";
+        public const string PencilEmoji = "\U0001F4DD";
     }
 }

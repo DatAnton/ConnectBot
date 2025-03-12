@@ -1,8 +1,6 @@
 ﻿using ConnectBot.Application.Cache;
 using ConnectBot.Application.Constants;
-using ConnectBot.Domain.Entities;
 using ConnectBot.Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -15,15 +13,12 @@ namespace ConnectBot.Infrastructure.Services
         private readonly ITelegramBotClient _botClient;
         private readonly UserCache _userCache;
         private readonly IUserService _userService;
-        private readonly IApplicationDbContext _applicationDbContext;
 
-        public TelegramBotService(ITelegramBotClient botClient, UserCache userCache, IUserService userService,
-            IApplicationDbContext applicationDbContext)
+        public TelegramBotService(ITelegramBotClient botClient, UserCache userCache, IUserService userService)
         {
             _botClient = botClient;
             _userCache = userCache;
             _userService = userService;
-            _applicationDbContext = applicationDbContext;
         }
 
         public async Task SendMessage(ChatId chatId, string text, IReplyMarkup? replyMarkup)
@@ -106,6 +101,7 @@ namespace ConnectBot.Infrastructure.Services
                 },
                 new[]
                 {
+                    new KeyboardButton(CommandConstants.QuestionsCommand),
                     new KeyboardButton(CommandConstants.DonateYouthTeamCommand)
                 }
             });

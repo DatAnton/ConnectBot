@@ -39,6 +39,9 @@
         public const string SocialNetworksSiteText = $"{EmojiConstants.GlobeEmoji} Sila web-site";
         public const string SocialNetworksPhotosChannelText = $"{EmojiConstants.PictureEmoji} Sila Church PHOTO";
 
+        public const string AskQuestionHereText = $"{EmojiConstants.PencilEmoji} Спрашывать здесь";
+        public const string AskQuestionsHeaderText = "Переходи на специальную платформу анонимных вопросов";
+
         public const string DonateToYouthTeamText =
             $"Спасибо, что решил пожертвовать молодежной команде.{EmojiConstants.WowEmoji}{EmojiConstants.HugsEmoji}\r\nЭто можно сделать платежом на банковские реквизиты церкви с отметкой <b>Youth</b>.\r\nМы любим тебя!{EmojiConstants.RedHeartEmoji}\r\n\r\nПолучатель: SILA CHURCH\r\nНомер счета: FI6571401420046462\r\nMessage: Youth";
 

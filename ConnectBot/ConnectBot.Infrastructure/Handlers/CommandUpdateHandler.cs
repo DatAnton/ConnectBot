@@ -65,6 +65,9 @@ namespace ConnectBot.Infrastructure.Handlers
             },
             {
                 CommandConstants.UserPanelCommand, new UserPanel.Command()
+            },
+            {
+                CommandConstants.QuestionsCommand, new Questions.Command()
             }
         };
 
