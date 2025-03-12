@@ -1,4 +1,6 @@
-﻿namespace ConnectBot.Domain.Entities
+﻿using System.Web;
+
+namespace ConnectBot.Domain.Entities
 {
     public class User
     {
@@ -12,6 +14,6 @@
         public IList<CommunicationRequest> CommunicationRequests { get; set; }
         public IList<EventParticipation> EventParticipations { get; set; }
 
-        public string DisplayName => $"{FirstName} {LastName} (@{UserName})";
+        public string DisplayName => HttpUtility.HtmlEncode($"{FirstName} {LastName} (@{UserName})");
     }
 }
