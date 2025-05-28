@@ -50,13 +50,13 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 7,
                     Name = "White",
-                    ColorSymbol = "\U000025A1"
+                    ColorSymbol = "\U00002B1C"
                 },
                 new ()
                 {
                     Id = 8,
                     Name = "Black",
-                    ColorSymbol = "\U000025A0"
+                    ColorSymbol = "\U00002B1B"
                 }
             });
         }
