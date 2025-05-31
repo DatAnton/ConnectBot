@@ -57,11 +57,11 @@ namespace ConnectBot.Application.Event
                     return;
                 }
 
-                if (DateTime.UtcNow < todayEvent.StartDateTime)
-                {
-                    await _botService.SendMessage(request.Message.Chat.Id, TextConstants.WrongCommandOrMessageText);
-                    return;
-                }
+                //if (DateTime.UtcNow < todayEvent.StartDateTime)
+                //{
+                //    await _botService.SendMessage(request.Message.Chat.Id, TextConstants.WrongCommandOrMessageText);
+                //    return;
+                //}
 
                 if (_eventCache.IsIceBreakerGenerated && request.Message.Chat.Id != UtilConstants.SuperAdminChatId)
                 {
