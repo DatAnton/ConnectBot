@@ -47,5 +47,9 @@
 
         public static Func<string, string> IceBreakerMessageText = partner => $"{EmojiConstants.IceEmoji}{EmojiConstants.RightEmoji}{EmojiConstants.DropEmoji} It's Ice breaker time!\r\nПора разломать лед между нами и стать ближе.\r\n\r\nТвой собеседник сегодня - {partner}\r\nНайди его и вперед общаться{EmojiConstants.TeamEmoji}";
         public static Func<string, string, string> IceBreakerListText = (eventName, usersList) => $"Ice breaker {eventName}: \r\n\r\n{usersList}";
+
+        public const string NoCommunicationPartner = $"Не удалось найти собеседника {EmojiConstants.NotFoundEmoji}";
+        public const string NoCommunicationPartnerResponse = $"Не растраивайся! Подходи к организаторам и можна поговорить с ними. {EmojiConstants.HugsEmoji}{EmojiConstants.HeartEmoji}";
+        public static Func<string, string> NoCommunicationPartnerAdminInfo = fromUser => $"{EmojiConstants.ExclamationMarkEmoji}{fromUser} не нашел собеседника!";
     }
 }

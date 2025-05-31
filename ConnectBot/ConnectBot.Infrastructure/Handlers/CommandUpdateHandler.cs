@@ -146,6 +146,10 @@ namespace ConnectBot.Infrastructure.Handlers
             {
                 await _mediator.Send(new Start.Command().SetMessage(query.Message));
             }
+            else if (query.Data == UtilConstants.CommunicationPartnerNotFound)
+            {
+                await _mediator.Send(new CommunicationRedirect.Command().SetMessage(query.Message));
+            }
         }
     }
 }

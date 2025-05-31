@@ -5,6 +5,7 @@ using ConnectBot.Domain.Entities;
 using ConnectBot.Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace ConnectBot.Application.Event
 {
@@ -73,14 +74,14 @@ namespace ConnectBot.Application.Event
 
                 List<Tuple<User, User>> iceBreakerList = new();
                 var users = await _context.EventParticipations.Include(ep => ep.User)
-                    .Where(ep => ep.EventId == todayEvent.Id)
+                    .Where(ep => ep.EventId == todayEvent.Id && !ep.User.IsAdmin)
                     .Select(ep => ep.User)
                     .ToListAsync(cancellationToken);
 
                 if (users.Count % 2 != 0)
                 {
-                    //remove host if needed
-                    users.RemoveAll(u => u.ChatId == request.Message.Chat.Id);
+                    //add host if needed
+                    users.Add(currentUser);
                 }
 
                 //shuffle
@@ -101,11 +102,19 @@ namespace ConnectBot.Application.Event
                 //send to superAdmin
                 await _botService.SendMessage(UtilConstants.SuperAdminChatId, TextConstants.IceBreakerListText(todayEvent.Name, userPairsListString));
 
+                var inlineKeyboard = new InlineKeyboardMarkup(new[]
+                {
+                    new[]
+                    {
+                        InlineKeyboardButton.WithCallbackData(TextConstants.NoCommunicationPartner, UtilConstants.CommunicationPartnerNotFound)
+                    }
+                });
+
                 //send message to users
                 foreach (var usersPair in iceBreakerList)
                 {
-                    await _botService.SendMessage(usersPair.Item1.ChatId, TextConstants.IceBreakerMessageText(usersPair.Item2.DisplayName));
-                    await _botService.SendMessage(usersPair.Item2.ChatId, TextConstants.IceBreakerMessageText(usersPair.Item1.DisplayName));
+                    await _botService.SendMessage(usersPair.Item1.ChatId, TextConstants.IceBreakerMessageText(usersPair.Item2.DisplayName), replyMarkup: inlineKeyboard);
+                    await _botService.SendMessage(usersPair.Item2.ChatId, TextConstants.IceBreakerMessageText(usersPair.Item1.DisplayName), replyMarkup: inlineKeyboard);
                 }
 
                 //send success response

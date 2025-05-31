@@ -28,5 +28,6 @@
         public const string RightEmoji = "\U000027A1";
         public const string QuestionMarkEmoji = "\U00002753";
         public const string PencilEmoji = "\U0001F4DD";
+        public const string NotFoundEmoji = "\U0001F937";
     }
 }
