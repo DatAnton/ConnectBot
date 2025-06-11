@@ -41,10 +41,10 @@ namespace ConnectBot.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ForDad()
+        public async Task<IActionResult> ForDad(int id)
         {
-            await _botService.SendMessage(UtilConstants.SuperAdminChatId, "QR code scanned");
-            return Redirect("https://www.protectedtext.com/forDadWithLove");
+            await _botService.SendMessage(UtilConstants.SuperAdminChatId, $"QR code {id} scanned");
+            return Redirect($"https://www.protectedtext.com/forDadWithLove{id}");
         }
     }
 }
