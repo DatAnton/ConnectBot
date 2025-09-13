@@ -1,5 +1,4 @@
-﻿using ConnectBot.Application.Constants;
-using ConnectBot.Domain.Interfaces;
+﻿using ConnectBot.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Telegram.Bot.Types;
@@ -11,13 +10,11 @@ namespace ConnectBot.Controllers
     public class BotController : Controller
     {
         private readonly ICommandUpdateHandler _updateHandler;
-        private readonly ITelegramBotService _botService;
         private readonly string _secretToken;
 
-        public BotController(IConfiguration configuration, ICommandUpdateHandler commandService, ITelegramBotService botService)
+        public BotController(IConfiguration configuration, ICommandUpdateHandler commandService)
         {
             _updateHandler = commandService;
-            _botService = botService;
             _secretToken = configuration.GetValue<string>("SECRET_TOKEN") ??
                            Environment.GetEnvironmentVariable("SECRET_TOKEN") ?? "";
             if (string.IsNullOrEmpty(_secretToken))
@@ -38,13 +35,6 @@ namespace ConnectBot.Controllers
             await _updateHandler.Handle(update);
 
             return Ok();
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ForDad(int id)
-        {
-            await _botService.SendMessage(UtilConstants.SuperAdminChatId, $"QR code {id} scanned");
-            return Redirect($"https://www.protectedtext.com/forDadWithLove{id}");
         }
     }
 }
