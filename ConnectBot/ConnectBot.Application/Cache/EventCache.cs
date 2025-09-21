@@ -1,6 +1,5 @@
 ﻿using ConnectBot.Domain.Entities;
 using ConnectBot.Domain.Interfaces;
-using Telegram.Bot.Types;
 
 namespace ConnectBot.Application.Cache
 {
@@ -9,9 +8,10 @@ namespace ConnectBot.Application.Cache
         private readonly IEventService _eventService;
         private Domain.Entities.Event? _todayEvent { get; set; }
         private Dictionary<int, TeamColor> _teamColors = new();
-        private Dictionary<int, int?> _eventParticipations = new(); //key: userId, value: eventBenefitId
+        private List<int> _eventParticipations = new();
         private List<EventBenefit> _eventBenefits = new();
         private bool _iceBreakerGenerated = false;
+        private int _countOfGeneratedBenefits = 0;
         private List<EventBenefit> _availableEventBenefits = new();
 
         public EventCache(IEventService eventService)
@@ -25,11 +25,13 @@ namespace ConnectBot.Application.Cache
             if (_todayEvent == null || _todayEvent.StartDateTime.Date != eventDate)
             {
                 _todayEvent = await _eventService.GetTodayEvent(eventDate, cancellationToken);
-                _eventParticipations = _todayEvent != null
-                    ? _todayEvent.EventParticipations.ToDictionary(ep => ep.UserId, ep => ep.EventBenefitId)
-                    : new Dictionary<int, int?>();
-                _iceBreakerGenerated = false;
-                _eventBenefits = await _eventService.GetEventBenefits(cancellationToken);
+                if (_todayEvent != null)
+                {
+                    _iceBreakerGenerated = false;
+                    _eventParticipations = _todayEvent.EventParticipations.Select(ep => ep.UserId).ToList();
+                    _eventBenefits = await _eventService.GetEventBenefits(cancellationToken);
+                    _countOfGeneratedBenefits = _todayEvent.EventParticipations.Count(ep => ep.EventBenefitId.HasValue);
+                }
             }
 
             return _todayEvent;
@@ -50,7 +52,7 @@ namespace ConnectBot.Application.Cache
         {
             if (!_availableEventBenefits.Any())
             {
-                _availableEventBenefits = _eventParticipations.Values.Any(v => v.HasValue)
+                _availableEventBenefits = _countOfGeneratedBenefits > 0
                     ? _eventBenefits.Where(eb => !eb.IsOneTimeBenefit).ToList()
                 : _eventBenefits;
 
@@ -61,18 +63,22 @@ namespace ConnectBot.Application.Cache
         }
 
         public int GetCurrentParticipationsCount => _eventParticipations.Count;
-        public int GetAssignedBenefitsCount => _eventParticipations.Values.Count(v => v.HasValue);
+        public int GetAssignedBenefitsCount => _countOfGeneratedBenefits;
         public bool IsIceBreakerGenerated  => _iceBreakerGenerated;
 
         public void AddParticipation(int userId, int? benefitId)
         {
-            _eventParticipations.Add(userId, benefitId);
-            _availableEventBenefits.RemoveAll(eb => eb.Id == benefitId);
+            _eventParticipations.Add(userId);
+            if (benefitId.HasValue)
+            {
+                _availableEventBenefits.RemoveAll(eb => eb.Id == benefitId);
+                _countOfGeneratedBenefits++;
+            }
         }
 
         public bool IsOnEvent(int userId)
         {
-            return _eventParticipations.ContainsKey(userId);
+            return _eventParticipations.Contains(userId);
         }
 
         public void IceBreakerGenerated()
