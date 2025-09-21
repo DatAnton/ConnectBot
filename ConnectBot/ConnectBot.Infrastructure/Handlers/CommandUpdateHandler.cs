@@ -68,6 +68,9 @@ namespace ConnectBot.Infrastructure.Handlers
             },
             {
                 CommandConstants.QuestionsCommand, new Questions.Command()
+            },
+            {
+                CommandConstants.BenefitsCommand, new AssignedEventBenefits.Command()
             }
         };
 

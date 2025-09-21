@@ -30,5 +30,6 @@
         public const string PencilEmoji = "\U0001F4DD";
         public const string NotFoundEmoji = "\U0001F937";
         public const string CongratsEmoji = "\U0001F973";
+        public const string RocketEmoji = "\U0001F680";
     }
 }

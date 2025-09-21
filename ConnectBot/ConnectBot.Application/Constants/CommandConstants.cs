@@ -12,6 +12,7 @@
         public const string DonateYouthTeamCommand = $"{EmojiConstants.RedHeartEmoji} Пожертвовать на развитие";
         public const string IceBreakerCommand = $"{EmojiConstants.IceEmoji}{EmojiConstants.RedCrossEmoji} Ice Breaker";
         public const string QuestionsCommand = $"{EmojiConstants.QuestionMarkEmoji} Анонимный вопрос";
+        public const string BenefitsCommand = $"{EmojiConstants.RocketEmoji} Бонусы/Задания";
 
         public const string AdminPanelCommand = "/admin_panel";
         public const string UserPanelCommand = "/user_panel";

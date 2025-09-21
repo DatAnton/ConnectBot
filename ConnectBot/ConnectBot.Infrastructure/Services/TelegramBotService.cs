@@ -23,6 +23,21 @@ namespace ConnectBot.Infrastructure.Services
 
         public async Task SendMessage(ChatId chatId, string text, IReplyMarkup? replyMarkup)
         {
+            //if (fullMessageText.Length > 4096) //telegram limitations
+            //{
+            //    const int messageCharactersSize = 4000;
+            //    var startIndex = 0;
+            //    while (startIndex < fullMessageText.Length)
+            //    {
+            //        var messageText = fullMessageText.Substring(startIndex, messageCharactersSize);
+            //        await _botService.SendMessage(request.Message.Chat.Id, messageText);
+            //        startIndex += messageCharactersSize;
+            //    }
+            //}
+            //else
+            //{
+            //    await _botService.SendMessage(request.Message.Chat.Id, fullMessageText);
+            //}
             await _botClient.SendTextMessageAsync(chatId, text, replyMarkup: replyMarkup, parseMode: ParseMode.Html);
         }
 
@@ -72,14 +87,12 @@ namespace ConnectBot.Infrastructure.Services
             {
                 new[]
                 {
-                    new KeyboardButton(CommandConstants.AllParticipationsCommand)
+                    new KeyboardButton(CommandConstants.AllParticipationsCommand),
+                    new KeyboardButton(CommandConstants.BenefitsCommand)
                 },
                 new[]
                 {
                     new KeyboardButton(CommandConstants.AllParticipationsNumbersCommand),
-                },
-                new[]
-                {
                     new KeyboardButton(CommandConstants.IceBreakerCommand),
                 }
             });
