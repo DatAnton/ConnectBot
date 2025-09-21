@@ -17,25 +17,27 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 1,
                     EventBenefitType = EventBenefitType.Bonus,
-                    Content = "Cпециальное блюдо только для тебя! Просто подойди на кухню и покажи это сообщение."
+                    Content = "Cпециальное блюдо только для тебя! Просто подойди на кухню и покажи это сообщение.",
+                    IsOneTimeBenefit = true
                 },
                 new ()
                 {
                     Id = 2,
                     EventBenefitType = EventBenefitType.Bonus,
-                    Content = "Отдельный напиток только для тебя! Просто подойди на кухню и покажи это сообщение."
+                    Content = "Отдельный напиток только для тебя! Просто подойди на кухню и покажи это сообщение.",
+                    IsOneTimeBenefit = true
                 },
                 new ()
                 {
                     Id = 3,
                     EventBenefitType = EventBenefitType.Bonus,
-                    Content = "Минута славы! Мы официально тебя представим как главного гостя нашего Коннекта"
+                    Content = "Минута славы! Мы официально тебя представим как главного гостя нашего Коннекта."
                 },
                 new ()
                 {
                     Id = 4,
                     EventBenefitType = EventBenefitType.Bonus,
-                    Content = "Мы отметим тебя в инстаграмме нашего Коннекта!"
+                    Content = "Мы отметим тебя в инстаграме нашего Коннекта!"
                 },
                 new ()
                 {
@@ -71,13 +73,13 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 10,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "Крикнуть «вот это кринж» после какой-то игры."
+                    Content = "Крикнуть «вот это кринж!» после какой-то игры."
                 },
                 new ()
                 {
                     Id = 11,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "Называть и вести себя как человек паук ввесь Коннект."
+                    Content = "Называть и вести себя как человек-паук ввесь Коннект."
                 },
                 new ()
                 {
@@ -89,25 +91,19 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 13,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "Через каждые 20 минут говорить «я люблю вас!»."
+                    Content = "После звука сирены \ud83d\udea8 говорить громко «Окак!»."
                 },
                 new ()
                 {
                     Id = 14,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "После звука сирены \ud83d\udea8 говорить громко «Окак»."
+                    Content = "После звука сирены \ud83d\udea8 говорить громко «Абаюдна!»."
                 },
                 new ()
                 {
                     Id = 15,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "После звука сирены \ud83d\udea8 говорить громко «Абаюдна»."
-                },
-                new ()
-                {
-                    Id = 16,
-                    EventBenefitType = EventBenefitType.Task,
-                    Content = "После звука сирены \ud83d\udea8 говорить громко «это фиаско братан»."
+                    Content = "После звука сирены \ud83d\udea8 говорить громко «это фиаско братан!»."
                 }
             });
         }

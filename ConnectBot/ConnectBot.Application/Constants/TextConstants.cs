@@ -29,7 +29,7 @@ namespace ConnectBot.Application.Constants
         public static string CheckInRequiredForIceBreakerText = $"{EmojiConstants.ExclamationMarkEmoji} Для Ice Breaker генерации ты должен зачекиниться!";
         public static string AlreadyCheckedInText = $"Ты уже зачекинился. Наслаждайся там! {EmojiConstants.WowEmoji}";
         public static Func<string, string, string, string, string> CheckedInText = (uniqueNumber, teamColor, connectName, benefitText) => $"Добро пожаловать на {connectName}\r\n\r\n{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\n{benefitText}Наслаждайся там! {EmojiConstants.WowEmoji}";
-        public static Func<string, EventBenefitType, string> BenefitText = (benefitText, benefitType) => $"{EmojiConstants.CongratsEmoji} Поздравляем! Тебе сегодня {(benefitType == EventBenefitType.Bonus ? "выпал такой бонус" : "выпало такое задание")}: {benefitText}\r\n\r\n";
+        public static Func<string, EventBenefitType, string> BenefitText = (benefitText, benefitType) => $"{EmojiConstants.CongratsEmoji} Поздравляем! Тебе сегодня {(benefitType == EventBenefitType.Bonus ? "выпал такой бонус" : "выпало такое задание")}:\r\n{benefitText}\r\n\r\n";
 
         public static Func<string, string, string> AllParticipationsText = (eventName, usersList) => $"Все участники {eventName}: \r\n\r\n{usersList}";
 
