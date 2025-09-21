@@ -12,9 +12,9 @@ namespace ConnectBot.Controllers
         private readonly ICommandUpdateHandler _updateHandler;
         private readonly string _secretToken;
 
-        public BotController(IConfiguration configuration, ICommandUpdateHandler commandService)
+        public BotController(IConfiguration configuration, ICommandUpdateHandler commandUpdateHandler)
         {
-            _updateHandler = commandService;
+            _updateHandler = commandUpdateHandler;
             _secretToken = configuration.GetValue<string>("SECRET_TOKEN") ??
                            Environment.GetEnvironmentVariable("SECRET_TOKEN") ?? "";
             if (string.IsNullOrEmpty(_secretToken))

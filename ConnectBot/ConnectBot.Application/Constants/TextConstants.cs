@@ -1,4 +1,6 @@
-﻿namespace ConnectBot.Application.Constants
+﻿using ConnectBot.Domain.Enums;
+
+namespace ConnectBot.Application.Constants
 {
     public static class TextConstants
     {
@@ -26,7 +28,8 @@
         public static string IceBreakerGeneratedSuccessfullyText = $"{EmojiConstants.DoneEmoji}{EmojiConstants.IceEmoji} Ice Breaker сгенерирован успешно!";
         public static string CheckInRequiredForIceBreakerText = $"{EmojiConstants.ExclamationMarkEmoji} Для Ice Breaker генерации ты должен зачекиниться!";
         public static string AlreadyCheckedInText = $"Ты уже зачекинился. Наслаждайся там! {EmojiConstants.WowEmoji}";
-        public static Func<string, string, string, string> CheckedInText = (uniqueNumber, teamColor, connectName) => $"Добро пожаловать на {connectName}\r\n\r\n{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\nНаслаждайся там! {EmojiConstants.WowEmoji}";
+        public static Func<string, string, string, string, string> CheckedInText = (uniqueNumber, teamColor, connectName, benefitText) => $"Добро пожаловать на {connectName}\r\n\r\n{EmojiConstants.DoneEmoji}Ты зачекинился. Спасибо!\r\n\r\nТвой номер - {uniqueNumber}\r\nЦвет команды - {teamColor}\r\n\r\n{benefitText}Наслаждайся там! {EmojiConstants.WowEmoji}";
+        public static Func<string, EventBenefitType, string> BenefitText = (benefitText, benefitType) => $"{EmojiConstants.CongratsEmoji} Поздравляем! Тебе сегодня {(benefitType == EventBenefitType.Bonus ? "выпал такой бонус" : "выпало такое задание")}: {benefitText}\r\n\r\n";
 
         public static Func<string, string, string> AllParticipationsText = (eventName, usersList) => $"Все участники {eventName}: \r\n\r\n{usersList}";
 
@@ -39,7 +42,7 @@
         public const string SocialNetworksSiteText = $"{EmojiConstants.GlobeEmoji} Sila web-site";
         public const string SocialNetworksPhotosChannelText = $"{EmojiConstants.PictureEmoji} Sila Church PHOTO";
 
-        public const string AskQuestionHereText = $"{EmojiConstants.PencilEmoji} Спрашывать здесь";
+        public const string AskQuestionHereText = $"{EmojiConstants.PencilEmoji} Спрашивать здесь";
         public const string AskQuestionsHeaderText = "Переходи на специальную платформу анонимных вопросов";
 
         public const string DonateToYouthTeamText =

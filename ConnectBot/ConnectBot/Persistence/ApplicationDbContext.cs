@@ -13,6 +13,7 @@ namespace ConnectBot.Persistence
         {
             new TeamColorConfiguration().Configure(modelBuilder.Entity<TeamColor>());
             new UserConfiguration().Configure(modelBuilder.Entity<User>());
+            new EventBenefitConfiguration().Configure(modelBuilder.Entity<EventBenefit>());
         }
 
         public DbSet<User> Users { get; set; }
@@ -22,6 +23,7 @@ namespace ConnectBot.Persistence
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<CommunicationRequest> CommunicationRequests { get; set; }
         public DbSet<EventParticipation> EventParticipations { get; set; }
+        public DbSet<EventBenefit> EventBenefits { get; set; }
         public DbSet<Log> Logs { get; set; }
     }
 }

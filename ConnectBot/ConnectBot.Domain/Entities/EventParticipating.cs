@@ -11,5 +11,7 @@
         public TeamColor TeamColor { get; set; }
         public int UniqueNumber { get; set; }
         public DateTime CheckedInAt { get; set; }
+        public int? EventBenefitId { get; set; }
+        public EventBenefit EventBenefit { get; set; }
     }
 }

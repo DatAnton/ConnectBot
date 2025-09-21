@@ -12,6 +12,7 @@ namespace ConnectBot.Domain.Interfaces
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<CommunicationRequest> CommunicationRequests { get; set; }
         public DbSet<EventParticipation> EventParticipations { get; set; }
+        public DbSet<EventBenefit> EventBenefits { get; set; }
         public DbSet<Log> Logs { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

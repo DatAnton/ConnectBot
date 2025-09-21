@@ -12,11 +12,11 @@ namespace ConnectBot.Infrastructure.Services
         {
             _dbContextFactory = dbContextFactory;
         }
-        public async Task<Event?> GetTodayEvent(DateTime startDateTime, CancellationToken cancellationToken)
+        public async Task<Event?> GetTodayEvent(DateTime eventDate, CancellationToken cancellationToken)
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var todayEvent =
-                await dbContext.Events.Include(e => e.EventParticipations).FirstOrDefaultAsync(e => e.StartDateTime.Date == startDateTime,
+                await dbContext.Events.Include(e => e.EventParticipations).FirstOrDefaultAsync(e => e.StartDateTime.Date == eventDate,
                     cancellationToken);
             return todayEvent;
         }
@@ -27,6 +27,14 @@ namespace ConnectBot.Infrastructure.Services
             var teamColors =
                 await dbContext.TeamColors.ToListAsync(cancellationToken);
             return teamColors;
+        }
+
+        public async Task<List<EventBenefit>> GetEventBenefits(CancellationToken cancellationToken)
+        {
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            var eventBenefits =
+                await dbContext.EventBenefits.ToListAsync(cancellationToken);
+            return eventBenefits;
         }
     }
 }

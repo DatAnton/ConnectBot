@@ -1,5 +1,6 @@
 ﻿using ConnectBot.Domain.Entities;
 using ConnectBot.Domain.Interfaces;
+using Telegram.Bot.Types;
 
 namespace ConnectBot.Application.Cache
 {
@@ -8,8 +9,10 @@ namespace ConnectBot.Application.Cache
         private readonly IEventService _eventService;
         private Domain.Entities.Event? _todayEvent { get; set; }
         private Dictionary<int, TeamColor> _teamColors = new();
-        private List<int> _eventParticipations = new();
+        private Dictionary<int, int?> _eventParticipations = new(); //key: userId, value: eventBenefitId
+        private List<EventBenefit> _eventBenefits = new();
         private bool _iceBreakerGenerated = false;
+        private List<EventBenefit> _availableEventBenefits = new();
 
         public EventCache(IEventService eventService)
         {
@@ -18,14 +21,15 @@ namespace ConnectBot.Application.Cache
 
         public async Task<Domain.Entities.Event?> GetTodayEvent(CancellationToken cancellationToken)
         {
-            var startDateTime = DateTime.UtcNow.AddHours(2).Date; // hours for UTC+2
-            if (_todayEvent == null || _todayEvent.StartDateTime.Date != startDateTime)
+            var eventDate = DateTime.UtcNow.AddHours(2).Date; // hours for UTC+2
+            if (_todayEvent == null || _todayEvent.StartDateTime.Date != eventDate)
             {
-                _todayEvent = await _eventService.GetTodayEvent(startDateTime, cancellationToken);
+                _todayEvent = await _eventService.GetTodayEvent(eventDate, cancellationToken);
                 _eventParticipations = _todayEvent != null
-                    ? _todayEvent.EventParticipations.Select(ep => ep.UserId).ToList()
-                    : new List<int>();
+                    ? _todayEvent.EventParticipations.ToDictionary(ep => ep.UserId, ep => ep.EventBenefitId)
+                    : new Dictionary<int, int?>();
                 _iceBreakerGenerated = false;
+                _eventBenefits = await _eventService.GetEventBenefits(cancellationToken);
             }
 
             return _todayEvent;
@@ -42,17 +46,33 @@ namespace ConnectBot.Application.Cache
             return _teamColors[id];
         }
 
+        public List<EventBenefit> GetAvailableEventBenefits()
+        {
+            if (!_availableEventBenefits.Any())
+            {
+                _availableEventBenefits = _eventParticipations.Values.Any(v => v.HasValue)
+                    ? _eventBenefits.Where(eb => !eb.IsOneTimeBenefit).ToList()
+                : _eventBenefits;
+
+                //shuffle
+                _availableEventBenefits = _availableEventBenefits.OrderBy(_ => Random.Shared.Next()).ToList();
+            }
+            return _availableEventBenefits;
+        }
+
         public int GetCurrentParticipationsCount => _eventParticipations.Count;
+        public int GetAssignedBenefitsCount => _eventParticipations.Values.Count(v => v.HasValue);
         public bool IsIceBreakerGenerated  => _iceBreakerGenerated;
 
-        public void AddParticipation(int userId)
+        public void AddParticipation(int userId, int? benefitId)
         {
-            _eventParticipations.Add(userId);
+            _eventParticipations.Add(userId, benefitId);
+            _availableEventBenefits.RemoveAll(eb => eb.Id == benefitId);
         }
 
         public bool IsOnEvent(int userId)
         {
-            return _eventParticipations.Any(x => x == userId);
+            return _eventParticipations.ContainsKey(userId);
         }
 
         public void IceBreakerGenerated()

@@ -51,9 +51,10 @@ namespace ConnectBot.Application.Event
                     return;
                 }
 
-                var users = await _context.EventParticipations.Include(ep => ep.User)
+                var users = await _context.EventParticipations.Include(ep => ep.User).Include(ep => ep.EventBenefit)
                     .Where(ep => ep.EventId == todayEvent.Id).OrderBy(ep => ep.UniqueNumber)
-                    .Select(x => $"{x.UniqueNumber}. {x.User.DisplayName} {x.TeamColor.ColorSymbol}")
+                    .Select(x =>
+                        $"{x.UniqueNumber}. {x.User.DisplayName} {x.TeamColor.ColorSymbol}{(x.EventBenefitId.HasValue ? $" | {x.EventBenefit.Content}" : string.Empty)}")
                     .ToListAsync(cancellationToken);
 
                 var usersText = string.Join("\r\n", users);
