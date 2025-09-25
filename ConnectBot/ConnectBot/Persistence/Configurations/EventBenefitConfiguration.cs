@@ -37,7 +37,7 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 4,
                     EventBenefitType = EventBenefitType.Bonus,
-                    Content = "Мы отметим тебя в инстаграме нашего Коннекта!"
+                    Content = "Мы отметим тебя в инстаграме нашего Коннекта! Подойди к Кате."
                 },
                 new ()
                 {
@@ -67,7 +67,7 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 9,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "Сделать незаметно смешную фотку кого-то из молодежной команды."
+                    Content = "Сделать незаметно смешную фотку кого-то из молодежной команды до конца Коннекта и скинуть ее технической команде."
                 },
                 new ()
                 {
@@ -91,7 +91,7 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 13,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "После звука сирены \ud83d\udea8 говорить громко «Окак!»."
+                    Content = "После звука дверного звонка говорить громко «Окак!»."
                 },
                 new ()
                 {
@@ -103,7 +103,13 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 15,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "После звука сирены \ud83d\udea8 говорить громко «это фиаско братан!»."
+                    Content = "После звука барабана говорить громко «это фиаско братан!»."
+                },
+                new ()
+                {
+                    Id = 16,
+                    EventBenefitType = EventBenefitType.Task,
+                    Content = "Носить странную кепку ввесь Коннект. Подойти к организаторам чтобы получить её."
                 }
             });
         }

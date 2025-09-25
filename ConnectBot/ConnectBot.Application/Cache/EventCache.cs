@@ -29,8 +29,13 @@ namespace ConnectBot.Application.Cache
                 {
                     _iceBreakerGenerated = false;
                     _eventParticipations = _todayEvent.EventParticipations.Select(ep => ep.UserId).ToList();
-                    _eventBenefits = await _eventService.GetEventBenefits(cancellationToken);
                     _countOfGeneratedBenefits = _todayEvent.EventParticipations.Count(ep => ep.EventBenefitId.HasValue);
+                    _availableEventBenefits.Clear(); //clear to build new list for event in GetAvailableEventBenefits
+
+                    if (!_eventBenefits.Any())
+                    {
+                        _eventBenefits = await _eventService.GetEventBenefits(cancellationToken);
+                    }
                 }
             }
 
