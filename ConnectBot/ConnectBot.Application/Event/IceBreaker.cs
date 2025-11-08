@@ -33,6 +33,8 @@ namespace ConnectBot.Application.Event
 
             public async Task Handle(Command request, CancellationToken cancellationToken)
             {
+                await _botService.SendMessage(request.Message.Chat.Id, "Disabled feature");
+                return;
                 var currentUser = await _userCache.GetUserByChatId(request.Message.Chat.Id, cancellationToken);
                 if (currentUser == null)
                 {
