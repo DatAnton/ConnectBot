@@ -57,18 +57,29 @@ namespace ConnectBot.Application.Event
                     .ToListAsync(cancellationToken);
 
                 var bonusBenefits = users
-                    .Where(e => e.EventBenefit.EventBenefitType == EventBenefitType.Bonus);
-                var usersWithBenefits = bonusBenefits.Select(x =>
-                    $"{x.UniqueNumber}. {x.User.DisplayName} {x.EventBenefit.Content}");
-                var usersWithBenefitsText = string.Join("\r\n", usersWithBenefits);
-                await _botService.SendMessage(request.Message.Chat.Id, TextConstants.AllBenefitsText(usersWithBenefitsText, EventBenefitType.Bonus));
+                    .Where(e => e.EventBenefit.EventBenefitType == EventBenefitType.Bonus)
+                    .GroupBy(x => x.EventBenefitId);
 
-                var tasksBenefits = users
-                    .Where(e => e.EventBenefit.EventBenefitType == EventBenefitType.Task);
-                usersWithBenefits = tasksBenefits.Select(x =>
-                    $"{x.UniqueNumber}. {x.User.DisplayName} {x.EventBenefit.Content}");
-                usersWithBenefitsText = string.Join("\r\n", usersWithBenefits);
-                await _botService.SendMessage(request.Message.Chat.Id, TextConstants.AllBenefitsText(usersWithBenefitsText, EventBenefitType.Task));
+                var usersWithBenefits = bonusBenefits.Select(x => $"{x.First().EventBenefit.Content}:" +
+                                                                  string.Join("\r\n",
+                                                                      x.Select(y => $"{y.User.DisplayName}")));
+                var usersWithBenefitsText = string.Join("\r\n", usersWithBenefits);
+                await _botService.SendMessage(request.Message.Chat.Id,
+                    TextConstants.AllBenefitsText(usersWithBenefitsText, EventBenefitType.Bonus));
+
+
+                if (request.Message.Chat.Id == UtilConstants.SuperAdminChatId)
+                {
+                    var tasksBenefits = users
+                        .Where(e => e.EventBenefit.EventBenefitType == EventBenefitType.Task)
+                        .GroupBy(e => e.EventBenefitId);
+                    usersWithBenefits = tasksBenefits.Select(x => $"{x.First().EventBenefit.Content}:" +
+                                                                  string.Join("\r\n",
+                                                                      x.Select(y => $"{y.User.DisplayName}")));
+                    usersWithBenefitsText = string.Join("\r\n", usersWithBenefits);
+                    await _botService.SendMessage(request.Message.Chat.Id,
+                        TextConstants.AllBenefitsText(usersWithBenefitsText, EventBenefitType.Task));
+                }
 
             }
         }
