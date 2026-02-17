@@ -25,7 +25,7 @@ namespace ConnectBot.Persistence.Configurations
                     Id = 2,
                     EventBenefitType = EventBenefitType.Bonus,
                     Content = "Отдельный напиток только для тебя! Просто подойди на кухню и покажи это сообщение.",
-                    IsOneTimeBenefit = true
+                    IsOneTimeBenefit = false
                 },
                 new ()
                 {
@@ -37,7 +37,8 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 4,
                     EventBenefitType = EventBenefitType.Bonus,
-                    Content = "Мы отметим тебя в инстаграме нашего Коннекта! Подойди к Кате."
+                    Content = "Мы отметим тебя в инстаграме нашего Коннекта! Подойди к Кате.",
+                    IsActive = false
                 },
                 new ()
                 {
@@ -67,13 +68,14 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 9,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "Сделать незаметно смешную фотку кого-то из молодежной команды до конца Коннекта и скинуть ее технической команде."
+                    Content = "Сделать незаметно смешную фотку кого-то из молодежной команды до конца Коннекта и скинуть ее технической команде.",
+                    IsActive = false
                 },
                 new ()
                 {
                     Id = 10,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "Крикнуть «вот это кринж!» после какой-то игры."
+                    Content = "Крикнуть «вот это кринж!» после любой игры."
                 },
                 new ()
                 {
@@ -85,31 +87,59 @@ namespace ConnectBot.Persistence.Configurations
                 {
                     Id = 12,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "Через каждые 20 минут говорить «я люблю вас!»."
+                    Content = "Через каждые 30 минут говорить «Я люблю вас, булочки!»."
                 },
                 new ()
                 {
                     Id = 13,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "После звука дверного звонка говорить громко «Окак!»."
+                    Content = "После звука дверного звонка говорить громко «Окак!».",
+                    IsActive = false
                 },
                 new ()
                 {
                     Id = 14,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "После звука сирены \ud83d\udea8 говорить громко «Абаюдна!»."
+                    Content = "После звука сирены \ud83d\udea8 говорить громко «Абаюдна!».",
+                    IsActive = false
                 },
                 new ()
                 {
                     Id = 15,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "После звука барабана говорить громко «это фиаско братан!»."
+                    Content = "После звука барабана говорить громко «это фиаско братан!».",
+                    IsActive = false
                 },
                 new ()
                 {
                     Id = 16,
                     EventBenefitType = EventBenefitType.Task,
-                    Content = "Носить странную кепку ввесь Коннект. Подойти к организаторам чтобы получить её."
+                    Content = "Носить странную кепку ввесь Коннект. Подойти к организаторам чтобы получить её.",
+                    IsActive = false
+                },
+                new ()
+                {
+                    Id = 17,
+                    EventBenefitType = EventBenefitType.Task,
+                    Content = "Найти самого тихого человека и поддержать его."
+                },
+                new ()
+                {
+                    Id = 18,
+                    EventBenefitType = EventBenefitType.Task,
+                    Content = "Стать «амбассадором кухни» и рекламировать еду."
+                },
+                new ()
+                {
+                    Id = 19,
+                    EventBenefitType = EventBenefitType.Task,
+                    Content = "Спросить у 3 людей: «Какой твой вайб сегодня?»"
+                },
+                new ()
+                {
+                    Id = 20,
+                    EventBenefitType = EventBenefitType.Task,
+                    Content = "До конца Коннекта здороваться со всеми как ведущий новостей."
                 }
             });
         }

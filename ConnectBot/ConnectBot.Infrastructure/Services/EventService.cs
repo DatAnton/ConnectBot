@@ -33,7 +33,7 @@ namespace ConnectBot.Infrastructure.Services
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var eventBenefits =
-                await dbContext.EventBenefits.ToListAsync(cancellationToken);
+                await dbContext.EventBenefits.Where(e => e.IsActive).ToListAsync(cancellationToken);
             return eventBenefits;
         }
     }

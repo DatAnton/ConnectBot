@@ -8,4 +8,5 @@ namespace ConnectBot.Domain.Entities;
         public string Content { get; set; }
         public EventBenefitType EventBenefitType { get; set; }
         public bool IsOneTimeBenefit { get; set; }
+        public bool IsActive { get; set; } = true;
     }

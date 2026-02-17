@@ -114,8 +114,7 @@ namespace ConnectBot.Infrastructure.Services
                 },
                 new[]
                 {
-                    new KeyboardButton(CommandConstants.QuestionsCommand),
-                    new KeyboardButton(CommandConstants.DonateYouthTeamCommand)
+                    new KeyboardButton(CommandConstants.QuestionsCommand)
                 }
             });
         }
