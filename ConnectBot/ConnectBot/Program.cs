@@ -29,7 +29,7 @@ builder.Services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(optio
     string connectString;
     if (isProduction)
     {
-        var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres://(.*):(.*)@(.*):(.*)/(.*)");
+        var m = Regex.Match(Environment.GetEnvironmentVariable("DATABASE_URL")!, @"postgres(?:ql)?://(.*):(.*)@(.*):(.*)/(.*)");
         connectString =
             $"Server={m.Groups[3]};Port={m.Groups[4]};User Id={m.Groups[1]};Password={m.Groups[2]};Database={m.Groups[5]};sslmode=Prefer;Trust Server Certificate=true";
     }
