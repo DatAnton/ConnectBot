@@ -23,6 +23,16 @@ namespace ConnectBot.Application.Event
             private readonly Random _random;
             private const double AssignedTaskUsersPercent = 0.4;
 
+            private Dictionary<int, string> teamToAnimalMapping = new()
+            {
+                { 1, "волк" },
+                { 2, "горилла" },
+                { 3, "лев" },
+                { 4, "курица" },
+                { 5, "ворона" },
+                { 6, "овечка" }
+            };
+
             public Handler(ITelegramBotService botService, IApplicationDbContext context, UserCache userCache, EventCache eventCache)
             {
                 _botService = botService;
@@ -89,9 +99,11 @@ namespace ConnectBot.Application.Event
                     ? TextConstants.BenefitText(eventBenefit.Content, eventBenefit.EventBenefitType)
                     : string.Empty;
 
+                var animalName = teamToAnimalMapping.ContainsKey(teamColorId) ? teamToAnimalMapping[teamColorId] : "неизвестное животное";
+
                 await _botService.SendMessage(request.Message.Chat.Id,
                     TextConstants.CheckedInText(entity.UniqueNumber.ToString(),
-                        $"{teamColor.Name} {teamColor.ColorSymbol}", todayEvent.Name, eventBenefitText));
+                        $"{teamColor.Name} {teamColor.ColorSymbol}", todayEvent.Name, eventBenefitText, animalName));
             }
 
             private EventBenefit? GenerateAssignedBenefit(int userUniqueNumber)
